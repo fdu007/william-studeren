@@ -85,9 +85,24 @@
   .vink{color:var(--groen); font-weight:700;}
   .kruis{color:var(--rood); font-weight:700;}
   small.note{color:var(--grijs);}
+
+  /* ---- animaties ---- */
+  #confetti{position:fixed; inset:0; width:100vw; height:100vh; pointer-events:none; z-index:9999;}
+  @keyframes shake{0%,100%{transform:translateX(0)} 20%{transform:translateX(-9px)} 40%{transform:translateX(9px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)}}
+  .shake{animation:shake .4s;}
+  @keyframes pop{0%{transform:scale(1)} 45%{transform:scale(1.025)} 100%{transform:scale(1)}}
+  .goedflits{animation:pop .35s; box-shadow:0 0 0 3px rgba(47,143,78,.45), 0 2px 8px rgba(20,60,120,.06);}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+  .vraag-in{animation:fadeIn .28s ease;}
+  @keyframes bonk{0%,100%{transform:translateY(0)} 30%{transform:translateY(-14px)} 60%{transform:translateY(-4px)}}
+  .bonk{display:inline-block; animation:bonk .7s;}
+  .emoji{font-size:42px;}
+  .ic-thema{width:58px; height:58px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+            font-size:30px; margin:0 auto 6px; background:var(--lichtblauw); box-shadow:inset 0 0 0 2px #cfe0f5;}
 </style>
 </head>
 <body>
+<canvas id="confetti"></canvas>
 <div class="wrap">
   <header>
     <h1>Spelling oefenen</h1>
@@ -132,8 +147,9 @@
       <div><button class="btn sec" id="toonBtn">&#128065; Toon kort</button></div>
     </div>
 
-    <div class="vraag" id="vraagTekst"></div>
-    <div class="hint" id="vraagHint"></div>
+    <div class="ic-thema" id="icThema"></div>
+    <div class="vraag" id="vraagTekst" style="text-align:center;"></div>
+    <div class="hint" id="vraagHint" style="text-align:center;"></div>
 
     <div id="invulBlok">
       <input type="text" id="antwoord" autocomplete="off" autocorrect="off"
@@ -153,6 +169,7 @@
 
   <!-- EINDE -->
   <div id="einde" class="card eind verstop">
+    <div class="emoji" id="eindEmoji">🎉</div>
     <h2>Klaar!</h2>
     <div class="score-groot" id="eindScore">0 / 0</div>
     <p id="eindTekst"></p>
@@ -323,10 +340,31 @@ $("modeKeuze").querySelectorAll(".chip").forEach(c=>{
 // Hulpfuncties
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(((i+1)*((Math.sin(i*97.13+a.length)*10000)%1+1))%(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 // eenvoudige shuffle (geen Math.random nodig)
-function meng(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=(i*7+3)%(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+function meng(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
 function norm(s){return (s||"").toLowerCase().trim().replace(/\s+/g," ").replace(/[.’]/g,m=>m==="’"?"'":"");}
 function sleutel(v){return v.q || v.toon || v.w;}
+function icoonVoor(v){ return v.type==="dictee" ? "🎧" : "✏️"; }
+// confetti (zonder externe library)
+function confetti(groot){
+  const c=$("confetti"); if(!c) return;
+  const ctx=c.getContext("2d"); c.width=window.innerWidth; c.height=window.innerHeight;
+  const N=groot?140:34;
+  const cols=["#1b6fc4","#e8841a","#2f8f4e","#7b3fbf","#e84393","#f1c40f"];
+  const ox=window.innerWidth/2, oy=groot?window.innerHeight/3:window.innerHeight/2.4;
+  let parts=[];
+  for(let i=0;i<N;i++) parts.push({x:ox,y:oy,vx:(Math.random()-.5)*(groot?11:8),vy:Math.random()*-10-3,g:.28,
+    col:cols[i%cols.length],s:6+Math.random()*7,rot:Math.random()*6,vr:(Math.random()-.5)*.35,life:70+Math.random()*40});
+  let f=0;
+  (function tick(){
+    ctx.clearRect(0,0,c.width,c.height); let alive=false;
+    parts.forEach(p=>{ p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr; p.life--;
+      if(p.life>0 && p.y<c.height+30){ alive=true; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+        ctx.fillStyle=p.col; ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6); ctx.restore(); }});
+    if(alive && ++f<150) requestAnimationFrame(tick); else ctx.clearRect(0,0,c.width,c.height);
+  })();
+}
+function flits(klasse){ const q=$("quiz"); q.classList.remove("shake","goedflits"); void q.offsetWidth; q.classList.add(klasse); }
 function dedupe(arr){const s=new Set(),o=[];arr.forEach(x=>{const k=sleutel(x);if(!s.has(k)){s.add(k);o.push(x);}});return o;}
 // fout antwoord -> later in deze ronde opnieuw stellen (op een willekeurige plaats)
 function requeue(v){
@@ -384,6 +422,8 @@ function toonVraag(){
   $("telLinks").textContent="Vraag "+(idx+1)+" / "+vragen.length;
   $("telRechts").textContent="Score: "+score;
   $("balkVul").style.width=(idx/vragen.length*100)+"%";
+  $("icThema").textContent=icoonVoor(v);
+  const qc=$("quiz"); qc.classList.remove("shake","goedflits","vraag-in"); void qc.offsetWidth; qc.classList.add("vraag-in");
 
   if(v.type==="dictee"){
     $("luisterBlok").style.display="";
@@ -454,6 +494,7 @@ function feedback(ok,msg,uitleg){
   const f=$("feedback");
   f.className="feedback "+(ok?"ok":"nok");
   f.innerHTML=msg+(uitleg?"<div class='uitleg'>"+uitleg+"</div>":"");
+  if(ok){ flits("goedflits"); confetti(false); } else { flits("shake"); }
 }
 function naVraag(){
   $("checkBtn").classList.add("verstop");
@@ -473,12 +514,15 @@ function eindscherm(){
   $("einde").classList.remove("verstop");
   $("balkVul").style.width="100%";
   $("eindScore").textContent=score+" / "+vragen.length;
-  const pct=Math.round(score/vragen.length*100);
-  let t;
-  if(pct===100) t="Perfect! Alles juist! 🎉";
-  else if(pct>=80) t="Heel goed! 👏";
-  else if(pct>=60) t="Goed bezig. Oefen de fouten nog eens.";
-  else t="Blijf oefenen, je raakt er wel! 💪";
+  const pct=vragen.length?Math.round(score/vragen.length*100):0;
+  let t, e;
+  if(pct===100){ t="Perfect! Alles juist!"; e="🏆"; }
+  else if(pct>=80){ t="Heel goed!"; e="🎉"; }
+  else if(pct>=60){ t="Goed bezig. Oefen de fouten nog eens."; e="👍"; }
+  else { t="Blijf oefenen, je raakt er wel!"; e="💪"; }
+  const em=$("eindEmoji"); em.textContent=e;
+  em.classList.remove("bonk"); void em.offsetWidth; em.classList.add("bonk");
+  if(pct>=80){ confetti(true); setTimeout(()=>confetti(true),350); }
   $("eindTekst").textContent=t+" ("+pct+"%)";
 
   const fl=$("foutenLijst");
