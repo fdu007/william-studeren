@@ -109,6 +109,8 @@
   .navlinks a.on{background:#0f172a; color:#fff; border-color:#0f172a;}
   .gamebadge{font-weight:800; font-size:.8rem; background:#1d2733; color:#fff; padding:6px 11px; border-radius:999px; white-space:nowrap;}
   .ps-vak{background:#fff7e9; border:1px solid #f0d9b0; color:#8a5a12; border-radius:10px; padding:12px 14px; margin:12px 0; font-weight:600;}
+  .langbtn{font-weight:700; font-size:.82rem; padding:7px 12px; border-radius:999px; border:1px solid #e2e8f0; background:#fff; color:#0f172a; cursor:pointer; white-space:nowrap;}
+  .woordfr{margin-top:6px; font-size:13px; color:#5a6675;}
 </style>
 </head>
 <body>
@@ -121,31 +123,32 @@
       <a href="so-oefenen.html">🧬 SO</a>
       <a href="spelling-oefenen.html" class="on">✍️ Spelling</a>
       <a href="stats.html">📊 Stats</a>
+      <button class="langbtn" id="langBtn">🇫🇷 FR</button>
       <span class="gamebadge" id="gameBadge">🎮 0 min</span>
     </div>
   </nav>
   <header>
-    <h1>Spelling oefenen</h1>
-    <p>Voor William - op basis van de cursus (Z-schrift 6)</p>
+    <h1 data-i18n="titel">Spelling oefenen</h1>
+    <p data-i18n="ondertitel">Voor William - op basis van de cursus (Z-schrift 6)</p>
   </header>
 
   <!-- START -->
   <div id="start" class="card">
-    <h2>Wat wil je oefenen?</h2>
+    <h2 data-i18n="watOefenen">Wat wil je oefenen?</h2>
     <div class="keuze" id="modeKeuze">
-      <div class="chip aan" data-mode="dictee">Woorden (dictee)</div>
-      <div class="chip" data-mode="regels">Regels</div>
-      <div class="chip" data-mode="gemengd">Gemengd</div>
+      <div class="chip aan" data-mode="dictee" data-i18n="modeDictee">Woorden (dictee)</div>
+      <div class="chip" data-mode="regels" data-i18n="modeRegels">Regels</div>
+      <div class="chip" data-mode="gemengd" data-i18n="modeGemengd">Gemengd</div>
     </div>
 
     <div id="pakketBlok">
-      <h2 style="margin-top:16px;">Welke woordpakketten?</h2>
+      <h2 data-i18n="welkePakketten" style="margin-top:16px;">Welke woordpakketten?</h2>
       <div class="keuze" id="pakketKeuze"></div>
       <div class="btn-row" style="margin-top:4px;">
-        <button class="btn sec" id="allesAan">Alles</button>
-        <button class="btn sec" id="allesUit">Niets</button>
+        <button class="btn sec" id="allesAan" data-i18n="alles">Alles</button>
+        <button class="btn sec" id="allesUit" data-i18n="niets">Niets</button>
       </div>
-      <p class="hint" style="margin-top:12px;">
+      <p class="hint" data-i18n="dicteeNote" style="margin-top:12px;">
         Bij het dictee leest de computer het woord voor met een <b>Nederlandse stem</b>.
         Klik op de oranje knop <b>&#128266;</b> om het (opnieuw) te horen, en typ het woord.
         Is er geen Nederlandse stem op het toestel, dan gebruikt de oefening automatisch een
@@ -154,7 +157,7 @@
       </p>
     </div>
 
-    <button class="btn groot" id="startBtn" style="margin-top:10px;">Start &#9654;</button>
+    <button class="btn groot" id="startBtn" data-i18n="startKnop" style="margin-top:10px;">Start &#9654;</button>
   </div>
 
   <!-- QUIZ -->
@@ -164,7 +167,7 @@
 
     <div class="midden" id="luisterBlok">
       <button class="luister" id="luisterBtn" title="Beluister">&#128266;</button>
-      <div><button class="btn sec" id="toonBtn">&#128065; Toon kort</button></div>
+      <div><button class="btn sec" id="toonBtn" data-i18n="toonKort">&#128065; Toon kort</button></div>
     </div>
 
     <div class="ic-thema" id="icThema"></div>
@@ -173,7 +176,7 @@
 
     <div id="invulBlok">
       <input type="text" id="antwoord" autocomplete="off" autocorrect="off"
-             autocapitalize="off" spellcheck="false" placeholder="Typ hier ...">
+             autocapitalize="off" spellcheck="false" data-i18n-ph="typPlaceholder" placeholder="Typ hier ...">
     </div>
 
     <div class="opties verstop" id="optieBlok"></div>
@@ -181,28 +184,28 @@
     <div class="feedback" id="feedback"></div>
 
     <div class="btn-row" style="margin-top:16px;">
-      <button class="btn" id="checkBtn">Controleer</button>
-      <button class="btn verstop" id="volgendeBtn">Volgende &#9654;</button>
-      <button class="btn sec" id="stopBtn" style="margin-left:auto;">Stoppen</button>
+      <button class="btn" id="checkBtn" data-i18n="controleer">Controleer</button>
+      <button class="btn verstop" id="volgendeBtn" data-i18n="volgende">Volgende &#9654;</button>
+      <button class="btn sec" id="stopBtn" data-i18n="stoppen" style="margin-left:auto;">Stoppen</button>
     </div>
   </div>
 
   <!-- EINDE -->
   <div id="einde" class="card eind verstop">
     <div class="emoji" id="eindEmoji">🎉</div>
-    <h2>Klaar!</h2>
+    <h2 data-i18n="klaar">Klaar!</h2>
     <div class="score-groot" id="eindScore">0 / 0</div>
     <p id="eindTekst"></p>
     <div id="psMelding"></div>
     <div id="foutenLijst" style="text-align:left;"></div>
     <div class="btn-row" style="justify-content:center; margin-top:16px;">
-      <button class="btn" id="mailBtn">📧 Stuur naar papa</button>
-      <button class="btn sec" id="opnieuwFoutBtn">Oefen de fouten opnieuw</button>
-      <button class="btn sec" id="opnieuwBtn">Terug naar start</button>
+      <button class="btn" id="mailBtn" data-i18n="mail">📧 Stuur naar papa</button>
+      <button class="btn sec" id="opnieuwFoutBtn" data-i18n="opnieuwFout">Oefen de fouten opnieuw</button>
+      <button class="btn sec" id="opnieuwBtn" data-i18n="terug">Terug naar start</button>
     </div>
   </div>
 
-  <p class="midden"><small class="note">Tip: kan op de computer, de tablet of de gsm. Niets wordt bewaard of verstuurd.</small></p>
+  <p class="midden"><small class="note" data-i18n="voetnoot">Tip: kan op computer, tablet en gsm. Alles blijft op dit toestel.</small></p>
 </div>
 
 <script>
@@ -366,6 +369,124 @@ function meng(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Ma
 function norm(s){return (s||"").toLowerCase().trim().replace(/\s+/g," ").replace(/[.’]/g,m=>m==="’"?"'":"");}
 function sleutel(v){return v.q || v.toon || v.w;}
 function icoonVoor(v){ return v.type==="dictee" ? "🎧" : "✏️"; }
+
+/* ===== meertalig (NL standaard / FR) ===== */
+const I18N={
+  nl:{
+    titel:"Spelling oefenen", ondertitel:"Voor William - op basis van de cursus (Z-schrift 6)",
+    watOefenen:"Wat wil je oefenen?", modeDictee:"Woorden (dictee)", modeRegels:"Regels", modeGemengd:"Gemengd",
+    welkePakketten:"Welke woordpakketten?", alles:"Alles", niets:"Niets",
+    dicteeNote:"Bij het dictee leest de computer het woord voor met een <b>Nederlandse stem</b>. Klik op de oranje knop <b>&#128266;</b> om het (opnieuw) te horen, en typ het woord. Is er geen Nederlandse stem op het toestel, dan gebruikt de oefening automatisch een online Nederlandse stem (internet nodig). Werkt het geluid niet? Klik dan op <b>&#128065; Toon kort</b> om het woord even te zien.",
+    startKnop:"Start ▶", toonKort:"👁 Toon kort", typPlaceholder:"Typ hier ...",
+    controleer:"Controleer", volgende:"Volgende ▶", stoppen:"Stoppen",
+    klaar:"Klaar!", mail:"📧 Stuur naar papa", opnieuwFout:"Oefen de fouten opnieuw", terug:"Terug naar start",
+    voetnoot:"Tip: kan op computer, tablet en gsm. Alles blijft op dit toestel.",
+    vraag:"Vraag", score:"Score", schrijfWoord:"Schrijf het woord dat je hoort.",
+    woordpakket:"Woordpakket", lidwoord:"lidwoord", geenLidwoord:"geen lidwoord", herhaling:"herhaling",
+    juist:"Juist!", foutWoord:"Fout. Juist is:", jijSchreef:"Jij schreef:",
+    foutAntwoord:"Fout. Het juiste antwoord is:",
+    teHerhalen:"Te herhalen", geenFouten:"Geen fouten! ✔", kiesMin:"Kies minstens 1 woordpakket.",
+    eindPerfect:"Perfect! Alles juist!", eindGoed:"Heel goed!", eindOk:"Goed bezig. Oefen de fouten nog eens.", eindLaag:"Blijf oefenen, je raakt er wel!",
+    psNieuw:"🎮 Thema gemeesterd! Je verdient <b>$ min</b> PlayStation! 🎉",
+    psAl:"🎮 Top, alles juist! Deze thema's had je al gemeesterd.",
+    psBijna:"🎮 Voor 10 minuten PlayStation: een thema <b>zonder fouten</b> afwerken. Bijna!"
+  },
+  fr:{
+    titel:"Exercices d'orthographe", ondertitel:"Pour William - sur base du cours (Z-schrift 6)",
+    watOefenen:"Que veux-tu exercer ?", modeDictee:"Mots (dictée)", modeRegels:"Règles", modeGemengd:"Mélangé",
+    welkePakketten:"Quels woordpakketten ?", alles:"Tout", niets:"Rien",
+    dicteeNote:"Pour la dictée, l'ordinateur lit le mot avec une <b>voix néerlandaise</b>. Clique sur le bouton orange <b>&#128266;</b> pour (ré)écouter, puis tape le mot. S'il n'y a pas de voix néerlandaise sur l'appareil, l'exercice utilise automatiquement une voix néerlandaise en ligne (internet nécessaire). Le son ne marche pas ? Clique sur <b>&#128065; Montrer</b> pour voir le mot un instant.",
+    startKnop:"Commencer ▶", toonKort:"👁 Montrer", typPlaceholder:"Tape ici ...",
+    controleer:"Vérifier", volgende:"Suivant ▶", stoppen:"Arrêter",
+    klaar:"Terminé !", mail:"📧 Envoyer à papa", opnieuwFout:"Refaire les erreurs", terug:"Retour au début",
+    voetnoot:"Astuce : marche sur ordinateur, tablette et gsm. Tout reste sur cet appareil.",
+    vraag:"Question", score:"Score", schrijfWoord:"Écris le mot que tu entends.",
+    woordpakket:"Woordpakket", lidwoord:"article", geenLidwoord:"pas d'article", herhaling:"révision",
+    juist:"Juste !", foutWoord:"Faux. La bonne réponse est :", jijSchreef:"Tu as écrit :",
+    foutAntwoord:"Faux. La bonne réponse est :",
+    teHerhalen:"À revoir", geenFouten:"Aucune erreur ! ✔", kiesMin:"Choisis au moins 1 woordpakket.",
+    eindPerfect:"Parfait ! Tout juste !", eindGoed:"Très bien !", eindOk:"Bien joué. Refais encore les erreurs.", eindLaag:"Continue, tu vas y arriver !",
+    psNieuw:"🎮 Sujet maîtrisé ! Tu gagnes <b>$ min</b> de PlayStation ! 🎉",
+    psAl:"🎮 Super, tout juste ! Ces sujets étaient déjà maîtrisés.",
+    psBijna:"🎮 Pour 10 minutes de PlayStation : termine un sujet <b>sans faute</b>. Presque !"
+  }
+};
+let lang=(function(){ try{return localStorage.getItem("lang")||"nl";}catch(e){return "nl";} })();
+function t(k){ return (I18N[lang]&&I18N[lang][k]!=null)?I18N[lang][k]:I18N.nl[k]; }
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-i18n]").forEach(el=>{ const s=t(el.dataset.i18n); if(s!=null) el.innerHTML=s; });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el=>{ const s=t(el.dataset.i18nPh); if(s!=null) el.placeholder=s; });
+  const lb=$("langBtn"); if(lb) lb.textContent = lang==="nl" ? "🇫🇷 FR" : "🇳🇱 NL";
+}
+function uitlegVan(v){ return (lang==="fr" && SP_UF[v.q]) ? SP_UF[v.q] : v.u; }
+
+const WOORD_FR = {
+  "revolutie":"la révolution","portie":"la portion","attractie":"l'attraction","concreet":"concret","administratie":"l'administration",
+  "inclusief":"inclus (y compris)","economie":"l'économie","effect":"l'effet","formatie":"la formation","accent":"l'accent",
+  "generatie":"la génération","productie":"la production","adoptie":"l'adoption","accordeon":"l'accordéon","accu":"la batterie",
+  "democratie":"la démocratie","emotie":"l'émotion","succes":"le succès","relatie":"la relation","computer":"l'ordinateur",
+  "innerlijk":"intérieur","wekelijks":"hebdomadaire","betrekkelijk":"relatif","definitie":"la définition","gemeenschappelijk":"commun",
+  "lucifer":"l'allumette","aquarium":"l'aquarium","quotiënt":"le quotient","lancering":"le lancement","elektriciteit":"l'électricité",
+  "receptie":"la réception","organisatie":"l'organisation","oorspronkelijke":"originelle (d'origine)","redelijke":"raisonnable","quiz":"le quiz",
+  "maatschappelijke":"sociale (de la société)","cilinder":"le cylindre","verantwoordelijke":"le/la responsable","redactie":"la rédaction","onafhankelijk":"indépendant",
+  "examens":"les examens","export":"l'exportation","expert":"l'expert","faxapparaat":"le fax (l'appareil de fax)","extra":"supplémentaire (extra)",
+  "taxi":"le taxi","explosie":"l'explosion","comité":"le comité","perplex":"perplexe","luxe":"le luxe",
+  "sfinx":"le sphinx","oké":"d'accord (okay)","experiment":"l'expérience","geconcentreerd":"concentré","privéjet":"le jet privé",
+  "actrices":"les actrices","expeditie":"l'expédition","exemplaren":"les exemplaires","excuses":"les excuses","maximum":"le maximum",
+  "machinist":"le machiniste (le conducteur de train)","sociaal":"social","socialisme":"le socialisme","machine":"la machine","affiche":"l'affiche",
+  "fiche":"la fiche","chef":"le chef","cheque":"le chèque","China":"la Chine","provinciaal":"provincial",
+  "mysterieuze":"mystérieuse","stadium":"le stade (la phase)","douche":"la douche","chocolade":"le chocolat","chauffeur":"le chauffeur",
+  "choco":"la pâte à tartiner au chocolat","lunch":"le déjeuner (le lunch)","medium":"le médium (le moyen)","pension":"la pension","wereldkampioen":"le champion du monde",
+  "manege":"le manège","publiciteit":"la publicité","seksualiteit":"la sexualité","garage":"le garage","junior":"le junior",
+  "persoonlijkheid":"la personnalité","giraf":"la girafe","college":"le collège","mensheid":"l'humanité","actualiteit":"l'actualité",
+  "logeren":"loger (dormir chez quelqu'un)","bagage":"les bagages","jongleren":"jongler","mentaliteit":"la mentalité","horloge":"la montre",
+  "journaal":"le journal télévisé","jury":"le jury","werkgelegenheid":"l'emploi","etalage":"la vitrine","nieuwsgierigheid":"la curiosité",
+  "gezamenlijk":"commun (ensemble)","enigszins":"quelque peu","lood":"le plomb","luchtdruk":"la pression de l'air","astronauten":"les astronautes",
+  "noodlot":"le destin (le sort)","echtgenoot":"l'époux (le mari)","autoriteit":"l'autorité","verplichting":"l'obligation","doch":"pourtant (mais)",
+  "chaos":"le chaos","catechese":"la catéchèse","geenszins":"nullement (en aucune façon)","buitenwereld":"le monde extérieur","toelichting":"l'explication",
+  "dinosauriërs":"les dinosaures","verdachte":"le suspect","archeologen":"les archéologues","openlijk":"ouvertement","chemotherapie":"la chimiothérapie",
+  "Brazilië":"le Brésil","creatief":"créatif","internationaal":"international","reeën":"les chevreuils","concurrent":"le concurrent",
+  "traditionele":"traditionnelle","discussiëren":"discuter","financiële":"financière","oriëntatie":"l'orientation","materiële":"matérielle",
+  "epidemieën":"les épidémies","moskeeën":"les mosquées","emotioneel":"émotionnel","industriële":"industrielle","revolutionair":"révolutionnaire",
+  "poriën":"les pores","skiër":"le skieur","patiënt":"le patient","officiële":"officielle","encyclopedieën":"les encyclopédies",
+  "collega's":"les collègues","pony's":"les poneys","verslaggever":"le reporter (le journaliste)","individu's":"les individus","firma's":"les entreprises (les firmes)",
+  "puppy's":"les chiots","disco":"la discothèque","ambtenaar":"le fonctionnaire","drama's":"les drames","aspect":"l'aspect",
+  "stempellokaal":"le bureau de vote","baby's":"les bébés","risico's":"les risques","contract":"le contrat","verkoopprijs":"le prix de vente",
+  "taxi's":"les taxis","farao's":"les pharaons","middellandse":"méditerranéenne","hobby's":"les hobbys (les loisirs)","pyjama's":"les pyjamas",
+  "show":"le spectacle (le show)","stress":"le stress","collectie":"la collection","bulldozer":"le bulldozer","logica":"la logique",
+  "team":"l'équipe","respect":"le respect","crash":"le crash (l'accident)","drugs":"la drogue","interview":"l'interview",
+  "Franse":"française","West-Vlaamse":"de Flandre occidentale","jungle":"la jungle","reactie":"la réaction","Duits":"allemand",
+  "keeper":"le gardien de but","barbecueën":"faire un barbecue","Belgisch":"belge","Afrikaanse":"africaine","ketchup":"le ketchup",
+  "champagne":"le champagne","romantisch":"romantique","deskundige":"l'expert (le spécialiste)","traditie":"la tradition","toilet":"les toilettes",
+  "documentatie":"la documentation","portefeuille":"le portefeuille","dessert":"le dessert","logische":"logique","democratisch":"démocratique",
+  "theorie":"la théorie","guillotine":"la guillotine","medisch":"médical","coupé":"le compartiment (le coupé)","bibliotheek":"la bibliothèque",
+  "zelfstandig":"indépendant (autonome)","premier":"le premier ministre","medaille":"la médaille","inwendig":"interne","enquête":"l'enquête (le sondage)"
+};
+const SP_UF = {
+  "Schrijf je een hoofdletter bij de namen van de maanden?":"On ne met PAS de majuscule aux jours de la semaine, aux mois, aux saisons et aux points cardinaux.",
+  "Welk woord is juist geschreven?":"Les jours de la semaine ne prennent pas de majuscule.",
+  "Welk woord is juist geschreven? (taal/nationaliteit)":"Les dérivés de noms géographiques (langues, nationalités) prennent BIEN une majuscule : Franse, West-Vlaamse, Belgisch, Duits.",
+  "De zin begint met een apostrof. Wat is juist?":"Si la phrase commence par une apostrophe, c'est le deuxième mot (le premier mot complet) qui prend la majuscule : 's Ochtends.",
+  "Welke krijgt een hoofdletter?":"Les noms géographiques (pays, rivières, lieux...) prennent une majuscule. Pas les saisons.",
+  "Wat komt er na een BEGINaanhaling?":"Après le guillemet d'ouverture (beginaanhaling), il y a toujours une virgule.",
+  "Wat zet je VOOR een EINDaanhaling?":"Avant le guillemet de fermeture (eindaanhaling), on place deux points.",
+  "Waarmee begint een EINDaanhaling?":"Le guillemet de fermeture commence par une majuscule et tous les signes de ponctuation (le point aussi) sont à l'intérieur des guillemets.",
+  "Welke zin is juist geschreven?":"Un point d'exclamation et un point d'interrogation s'écrivent À L'INTÉRIEUR des guillemets.",
+  "Welk woord schrijf je met een koppelteken?":"On met un trait d'union (koppelteken) dans les composés avec Sint.",
+  "Welk woord is juist?":"On met un trait d'union dans les composés géographiques (Noord-Ierland) et avec oud/ex (oud-leraar, ex-vriend).",
+  "Welk woord is juist? (om uitspraakverwarring te vermijden)":"Entre les parties d'un mot composé, on met un trait d'union pour éviter la confusion de prononciation : na-apen, mee-eten, zee-egel.",
+  "Wat is het meervoud van 'opa'?":"Après a, i, o, u, y écrits seuls, on met 's au pluriel. Ex. opa's, baby's, taxi's.",
+  "Wat is het meervoud van 'risico'?":"Après a, i, o, u, y, on écrit 's au pluriel.",
+  "Hoe duid je bezit aan? Het boek van Sara is ...":"Pour indiquer la possession, on écrit 's après a, i, o, u, y : Sara's boek.",
+  "Hoe vind je de persoonsvorm in een zin?":"On trouve la persoonsvorm (le verbe conjugué) en transformant la phrase en question par oui/non. Elle se place alors toujours en tête.",
+  "Tegenwoordige tijd: kies de juiste vorm. 'De kip ... .' (broeden)":"Il/elle ou 'un autre' (un seul) : radical + t. Le radical est 'broed', donc : de kip broedt.",
+  "Verleden tijd van 'praten': 'Mama ... .'":"Au passé : praten devient praatte (comme dans le cours : maken-maakten, landen-landde).",
+  "Voltooid deelwoord: be-/ge- + e of i. Wat is juist?":"Avec be- et ge- + e ou i, on met un TRÉMA sur le e ou le i : geëindigd, beïnvloed, geïllustreerd.",
+  "Schrijf je d of t? 'Het is getover... .'":"Allonge le mot : getover-de, donc getover-d.",
+  "Voltooid deelwoord: be-/ge- + a of o. Wat is juist?":"Avec be- et ge- + a ou o, il n'y a PAS de confusion de prononciation : on écrit normalement, sans tréma."
+};
+function woordHulp(v){ const fr=WOORD_FR[v.w]; return fr?("<div class='woordfr'>🇫🇷 "+fr+"</div>"):""; }
 // confetti (zonder externe library)
 function confetti(groot){
   const c=$("confetti"); if(!c) return;
@@ -418,7 +539,7 @@ function bouwRegelVragen(){
 }
 
 function start(){
-  if(mode!=="regels" && gekozenPakketten.size===0){alert("Kies minstens 1 woordpakket.");return;}
+  if(mode!=="regels" && gekozenPakketten.size===0){alert(t("kiesMin"));return;}
   if(mode==="dictee") vragen=bouwDicteeVragen();
   else if(mode==="regels") vragen=bouwRegelVragen();
   else { // gemengd
@@ -470,8 +591,8 @@ function toonVraag(){
   $("feedback").innerHTML="";
   $("volgendeBtn").classList.add("verstop");
   $("checkBtn").classList.remove("verstop");
-  $("telLinks").textContent="Vraag "+(idx+1)+" / "+vragen.length;
-  $("telRechts").textContent="Score: "+score;
+  $("telLinks").textContent=t("vraag")+" "+(idx+1)+" / "+vragen.length;
+  $("telRechts").textContent=t("score")+": "+score;
   $("balkVul").style.width=(idx/vragen.length*100)+"%";
   $("icThema").textContent=icoonVoor(v);
   const qc=$("quiz"); qc.classList.remove("shake","goedflits","vraag-in"); void qc.offsetWidth; qc.classList.add("vraag-in");
@@ -480,8 +601,8 @@ function toonVraag(){
     $("luisterBlok").style.display="";
     $("invulBlok").classList.remove("verstop");
     $("optieBlok").classList.add("verstop");
-    $("vraagTekst").textContent="Schrijf het woord dat je hoort.";
-    $("vraagHint").innerHTML=(v._isHerhaling?"🔁 herhaling &middot; ":"")+"Woordpakket "+v.pk+(v.art?" &middot; lidwoord: <b>"+v.art+"</b>":" &middot; <i>geen lidwoord</i>");
+    $("vraagTekst").textContent=t("schrijfWoord");
+    $("vraagHint").innerHTML=(v._isHerhaling?("🔁 "+t("herhaling")+" &middot; "):"")+t("woordpakket")+" "+v.pk+(v.art?(" &middot; "+t("lidwoord")+": <b>"+v.art+"</b>"):(" &middot; <i>"+t("geenLidwoord")+"</i>"));
     const inp=$("antwoord"); inp.value=""; inp.disabled=false; inp.focus();
     setTimeout(()=>spreek(v.spreek),250);
   } else {
@@ -489,7 +610,7 @@ function toonVraag(){
     $("invulBlok").classList.add("verstop");
     $("optieBlok").classList.remove("verstop");
     $("vraagTekst").textContent=v.q;
-    $("vraagHint").innerHTML=v._isHerhaling?"🔁 herhaling":"";
+    $("vraagHint").innerHTML=v._isHerhaling?("🔁 "+t("herhaling")):"";
     const ob=$("optieBlok"); ob.innerHTML="";
     v.opties.forEach(op=>{
       const b=document.createElement("button");
@@ -508,12 +629,12 @@ function kiesOptie(btn,op,v){
   trackAntwoord(v, op.goed);
   if(op.goed){
     btn.classList.add("goed"); score++;
-    feedback(true,"Juist! &#9989;",v.u);
+    feedback(true,t("juist")+" &#9989;",uitlegVan(v));
   }else{
     btn.classList.add("fout");
     knoppen.forEach(k=>{ if(k.textContent===correctTekst(v)) k.classList.add("goed"); });
     fouten.push(v); requeue(v);
-    feedback(false,"Fout. Het juiste antwoord is: <b>"+correctTekst(v)+"</b>",v.u);
+    feedback(false,t("foutAntwoord")+" <b>"+correctTekst(v)+"</b>",uitlegVan(v));
   }
   naVraag();
 }
@@ -537,9 +658,9 @@ function checkDictee(){
     if(v.art.includes("(") && geg===wOK) goed=true;
   }
   trackAntwoord(v, goed);
-  if(goed){ score++; feedback(true,"Juist! &#9989; <b>"+v.toon+"</b>",""); }
-  else{ fouten.push(v); requeue(v); feedback(false,"Fout. Juist is: <b>"+v.toon+"</b>",
-        "Jij schreef: “"+inp.value.trim()+"”"); }
+  if(goed){ score++; feedback(true,t("juist")+" &#9989; <b>"+v.toon+"</b>",woordHulp(v)); }
+  else{ fouten.push(v); requeue(v); feedback(false,t("foutWoord")+" <b>"+v.toon+"</b>",
+        t("jijSchreef")+" “"+inp.value.trim()+"”"+woordHulp(v)); }
   naVraag();
 }
 
@@ -552,7 +673,7 @@ function feedback(ok,msg,uitleg){
 function naVraag(){
   $("checkBtn").classList.add("verstop");
   $("volgendeBtn").classList.remove("verstop");
-  $("telRechts").textContent="Score: "+score;
+  $("telRechts").textContent=t("score")+": "+score;
   $("volgendeBtn").focus();
 }
 
@@ -571,37 +692,37 @@ function eindscherm(vroeg){
     if(vroeg!==true){
       const nieuw=recordSessie();
       if(nieuw.length){
-        psEl.innerHTML="<div class='ps-vak'>🎮 Thema gemeesterd! Je verdient <b>"+(nieuw.length*10)+" minuten PlayStation</b>! 🎉</div>";
+        psEl.innerHTML="<div class='ps-vak'>"+t("psNieuw").replace("$",(nieuw.length*10))+"</div>";
         confetti(true); setTimeout(()=>confetti(true),300);
       } else if(fouten.length===0){
-        psEl.innerHTML="<div class='ps-vak'>🎮 Top, alles juist! Deze thema's had je al gemeesterd.</div>";
+        psEl.innerHTML="<div class='ps-vak'>"+t("psAl")+"</div>";
       } else {
-        psEl.innerHTML="<div class='ps-vak'>🎮 Voor 10 minuten PlayStation: een thema <b>zonder fouten</b> afwerken. Bijna!</div>";
+        psEl.innerHTML="<div class='ps-vak'>"+t("psBijna")+"</div>";
       }
     }
   }
   const pct=vragen.length?Math.round(score/vragen.length*100):0;
-  let t, e;
-  if(pct===100){ t="Perfect! Alles juist!"; e="🏆"; }
-  else if(pct>=80){ t="Heel goed!"; e="🎉"; }
-  else if(pct>=60){ t="Goed bezig. Oefen de fouten nog eens."; e="👍"; }
-  else { t="Blijf oefenen, je raakt er wel!"; e="💪"; }
+  let tekst, e;
+  if(pct===100){ tekst=t("eindPerfect"); e="🏆"; }
+  else if(pct>=80){ tekst=t("eindGoed"); e="🎉"; }
+  else if(pct>=60){ tekst=t("eindOk"); e="👍"; }
+  else { tekst=t("eindLaag"); e="💪"; }
   const em=$("eindEmoji"); em.textContent=e;
   em.classList.remove("bonk"); void em.offsetWidth; em.classList.add("bonk");
   if(pct>=80){ confetti(true); setTimeout(()=>confetti(true),350); }
-  $("eindTekst").textContent=t+" ("+pct+"%)";
+  $("eindTekst").textContent=tekst+" ("+pct+"%)";
 
   const fl=$("foutenLijst");
   const uniek=dedupe(fouten);
   if(uniek.length){
-    let h="<h2 style='font-size:16px;margin:14px 0 8px'>Te herhalen ("+uniek.length+"):</h2><ul>";
+    let h="<h2 style='font-size:16px;margin:14px 0 8px'>"+t("teHerhalen")+" ("+uniek.length+"):</h2><ul>";
     uniek.forEach(f=>{
       if(f.type==="dictee") h+="<li><b>"+f.toon+"</b> <small class='note'>(WP "+f.pk+")</small></li>";
       else h+="<li>"+f.q+" → <b>"+correctTekst(f)+"</b></li>";
     });
     h+="</ul>"; fl.innerHTML=h;
     $("opnieuwFoutBtn").style.display="";
-  } else { fl.innerHTML="<p class='vink'>Geen fouten! ✔</p>"; $("opnieuwFoutBtn").style.display="none"; }
+  } else { fl.innerHTML="<p class='vink'>"+t("geenFouten")+"</p>"; $("opnieuwFoutBtn").style.display="none"; }
 }
 
 $("opnieuwFoutBtn").onclick=()=>{
@@ -621,6 +742,16 @@ $("mailBtn").onclick=()=>{
 };
 $("opnieuwBtn").onclick=()=>{ $("einde").classList.add("verstop"); $("start").classList.remove("verstop"); };
 $("stopBtn").onclick=()=>eindscherm(true);
+$("langBtn").onclick=()=>{
+  lang = (lang==="nl") ? "fr" : "nl";
+  try{ localStorage.setItem("lang",lang); }catch(e){}
+  applyLang();
+  if(!$("quiz").classList.contains("verstop") && vragen[idx]){
+    $("telLinks").textContent=t("vraag")+" "+(idx+1)+" / "+vragen.length;
+    $("telRechts").textContent=t("score")+": "+score;
+  }
+};
+applyLang();
 toonGameBadge();
 $("startBtn").onclick=start;
 $("checkBtn").onclick=()=>{ if(vragen[idx].type==="dictee") checkDictee(); };
@@ -632,7 +763,7 @@ $("toonBtn").onclick=()=>{
   const v=vragen[idx]; if(v.type!=="dictee")return;
   const vt=$("vraagTekst"); const oud=vt.textContent;
   vt.textContent=v.toon;
-  setTimeout(()=>{ if(!beantwoord) vt.textContent="Schrijf het woord dat je hoort."; },1300);
+  setTimeout(()=>{ if(!beantwoord) vt.textContent=t("schrijfWoord"); },1300);
 };
 $("luisterBtn").onclick=()=>{ const v=vragen[idx]; if(v.type==="dictee") spreek(v.spreek); };
 

@@ -90,6 +90,7 @@
   .navlinks a.on{background:#0f172a; color:#fff; border-color:#0f172a;}
   .gamebadge{font-weight:800; font-size:.8rem; background:#1d2733; color:#fff; padding:6px 11px; border-radius:999px; white-space:nowrap;}
   .ps-vak{background:#fff7e9; border:1px solid #f0d9b0; color:#8a5a12; border-radius:10px; padding:12px 14px; margin:12px 0; font-weight:600;}
+  .langbtn{font-weight:700; font-size:.82rem; padding:7px 12px; border-radius:999px; border:1px solid #e2e8f0; background:#fff; color:#0f172a; cursor:pointer; white-space:nowrap;}
 </style>
 </head>
 <body>
@@ -102,26 +103,27 @@
       <a href="so-oefenen.html" class="on">🧬 SO</a>
       <a href="spelling-oefenen.html">✍️ Spelling</a>
       <a href="stats.html">📊 Stats</a>
+      <button class="langbtn" id="langBtn">🇫🇷 FR</button>
       <span class="gamebadge" id="gameBadge">🎮 0 min</span>
     </div>
   </nav>
   <header>
-    <h1>SO oefenen 🧬</h1>
-    <p>Voor William - puberteit, voortplanting, zwangerschap en geboorte (op basis van de cursus)</p>
+    <h1 data-i18n="titel">SO oefenen 🧬</h1>
+    <p data-i18n="ondertitel">Voor William - puberteit, voortplanting, zwangerschap en geboorte (op basis van de cursus)</p>
   </header>
 
   <div id="start" class="card">
-    <h2>Welk onderwerp wil je oefenen?</h2>
+    <h2 data-i18n="kiesThema">Welk onderwerp wil je oefenen?</h2>
     <div class="keuze" id="themaKeuze"></div>
     <div class="btn-row" style="margin-top:4px;">
-      <button class="btn sec" id="allesAan">Alles</button>
-      <button class="btn sec" id="allesUit">Niets</button>
+      <button class="btn sec" id="allesAan" data-i18n="alles">Alles</button>
+      <button class="btn sec" id="allesUit" data-i18n="niets">Niets</button>
     </div>
-    <p class="note" style="margin-top:12px; font-size:13px;">
+    <p class="note" data-i18n="startNote" style="margin-top:12px; font-size:13px;">
       Je krijgt vragen door elkaar. Bij een fout zie je meteen het juiste antwoord
       en een korte uitleg uit de les. Probeer een lange reeks goede antwoorden te halen! 🔥
     </p>
-    <button class="btn groot" id="startBtn" style="margin-top:10px;">Start &#9654;</button>
+    <button class="btn groot" id="startBtn" data-i18n="startKnop" style="margin-top:10px;">Start &#9654;</button>
   </div>
 
   <div id="quiz" class="card verstop">
@@ -137,34 +139,34 @@
     <div class="vraag" id="vraagTekst" style="text-align:center;"></div>
 
     <div id="invulBlok" class="verstop">
-      <input type="text" id="antwoord" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Typ je antwoord ...">
+      <input type="text" id="antwoord" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-i18n-ph="typPlaceholder" placeholder="Typ je antwoord ...">
     </div>
     <div class="opties verstop" id="optieBlok"></div>
 
     <div class="feedback" id="feedback"></div>
 
     <div class="btn-row" style="margin-top:16px;">
-      <button class="btn" id="checkBtn">Controleer</button>
-      <button class="btn verstop" id="volgendeBtn">Volgende &#9654;</button>
-      <button class="btn sec" id="stopBtn" style="margin-left:auto;">Stoppen</button>
+      <button class="btn" id="checkBtn" data-i18n="controleer">Controleer</button>
+      <button class="btn verstop" id="volgendeBtn" data-i18n="volgende">Volgende &#9654;</button>
+      <button class="btn sec" id="stopBtn" data-i18n="stoppen" style="margin-left:auto;">Stoppen</button>
     </div>
   </div>
 
   <div id="einde" class="card eind verstop">
     <div class="emoji" id="eindEmoji">🎉</div>
-    <h2>Klaar!</h2>
+    <h2 data-i18n="klaar">Klaar!</h2>
     <div class="score-groot" id="eindScore">0 / 0</div>
     <p id="eindTekst"></p>
     <div id="psMelding"></div>
     <div id="foutenLijst" style="text-align:left;"></div>
     <div class="btn-row" style="justify-content:center; margin-top:16px;">
-      <button class="btn" id="mailBtn">📧 Stuur naar papa</button>
-      <button class="btn sec" id="opnieuwFoutBtn">Oefen de fouten opnieuw</button>
-      <button class="btn sec" id="opnieuwBtn">Terug naar start</button>
+      <button class="btn" id="mailBtn" data-i18n="mail">📧 Stuur naar papa</button>
+      <button class="btn sec" id="opnieuwFoutBtn" data-i18n="opnieuwFout">Oefen de fouten opnieuw</button>
+      <button class="btn sec" id="opnieuwBtn" data-i18n="terug">Terug naar start</button>
     </div>
   </div>
 
-  <p class="eind"><small class="note">Werkt op computer, tablet en gsm. Niets wordt bewaard of verstuurd.</small></p>
+  <p class="eind"><small class="note" data-i18n="voetnoot">Werkt op computer, tablet en gsm. Alles blijft op dit toestel.</small></p>
 </div>
 
 <script>
@@ -312,8 +314,109 @@ const THEMAS=["Puberteit","Jongen","Meisje","Organen","Baby"];
 let gekozen=new Set(THEMAS);
 let vragen=[], idx=0, score=0, streak=0, maxStreak=0, fouten=[], beantwoord=false;
 
-const goedMsg=["Top! 🎉","Bingo! ✅","Pico bello! 🌟","Yes! 💪","Goed bezig! 👏","Helemaal juist! 🧠","Knap! ⭐"];
-const foutMsg=["Bijna! 🤏","Oei, net niet.","Geen probleem, kijk even:","Volgende keer beter! 💡"];
+/* ===== meertalig (NL standaard / FR) ===== */
+const SO_UF = {
+  "Wat is de puberteit?":"La puberté est la période où ton corps change petit à petit, d'enfant vers adulte, le plus souvent entre 10 et 14 ans.",
+  "Wat zijn geslachtshormonen?":"Les hormones sexuelles sont des substances chimiques. Elles provoquent les changements de la puberté et te rendent capable d'avoir des enfants (geslachtsrijp).",
+  "Je kunt de puberteit versnellen of tegenhouden.":"On ne peut pas arrêter ni accélérer la puberté. Tout se passe en son temps.",
+  "Geef een ander woord voor acne.":"Acné = boutons (puistjes). Ils apparaissent quand les glandes sébacées produisent trop de sébum (huidsmeer).",
+  "Wat is geslachtsrijp zijn?":"Pendant la puberté, tu deviens geslachtsrijp : ton corps peut avoir des enfants.",
+  "Welke verandering hoort bij een JONGEN in de puberteit?":"Chez un garçon : il grandit, peau grasse, acné, voix plus grave, pilosité, spermatozoïdes, érection, rêve mouillé.",
+  "Wat bedoelt men met 'de baard in de keel krijgen'?":"Pendant que le larynx (strottenhoofd) grandit, la voix peut déraper. On dit alors 'de baard in de keel krijgen' (muer).",
+  "Wat gebeurt er bij een erectie?":"Lors de l'excitation, du sang afflue dans les corps caverneux (zwellichamen) du pénis. Le pénis devient alors grand et dur.",
+  "Wat is sperma?":"Le sperme est un liquide plus ou moins transparent fabriqué dans les testicules (teelballen). Il est plein de spermatozoïdes.",
+  "Wat is een natte droom?":"Pendant le sommeil, un garçon peut avoir une érection avec une éjaculation : un rêve mouillé. La toute première éjaculation montre qu'il est fertile.",
+  "Welke verandering hoort bij een MEISJE in de puberteit?":"Chez une fille : elle grandit, hanches plus larges, pilosité, seins et menstruation.",
+  "Geef een ander woord voor menstruatie.":"La menstruation s'appelle aussi 'les règles' ou 'maandstonden' (être indisposée).",
+  "Wanneer is een meisje geslachtsrijp?":"Le fait d'avoir ses règles montre qu'elle est geslachtsrijp (capable d'avoir des enfants).",
+  "Een menstruatiecyclus duurt ongeveer ... dagen.":"Un cycle dure environ 28 jours (de 25 à 35 jours). Une femme a ses règles environ 1 fois par mois.",
+  "Het bloedverlies duurt gemiddeld ... dagen.":"La perte de sang dure en moyenne quatre jours.",
+  "Hoe kan het bloed van de maandstonden worden opgevangen?":"Le sang est recueilli avec une serviette hygiénique (maandverband) ou des tampons.",
+  "Je kunt zwanger zijn terwijl je menstrueert.":"Non. Quand tu as tes règles, il n'y a pas d'ovule fécondé : la paroi de l'utérus est justement en train de se détacher.",
+  "Wat is de menopauze?":"À partir de la ménopause (vers 50 ans), les ovaires ne libèrent plus d'ovules et la femme n'est plus fertile.",
+  "De weg van het eitje: elke maand komt een rijpe eicel los van de ... .":"Chaque mois, un ovule se détache de l'ovaire (eierstok). Par la trompe (eileider), il arrive dans l'utérus.",
+  "Waar worden de zaadcellen bij een man gemaakt?":"Les spermatozoïdes sont fabriqués dans les testicules (teelballen), en moyenne 100 millions par jour.",
+  "Waar zitten de eicellen bij een vrouw, en worden ze elke maand gemaakt?":"Les ovules se trouvent dans les ovaires. Ils ne sont pas fabriqués chaque mois : ils sont déjà là et mûrissent lentement.",
+  "Waarvoor dient de penis?":"Le pénis sert à uriner et à la reproduction (les spermatozoïdes sont déposés dans le vagin).",
+  "Hoe bewegen zaadcellen zich voort?":"Un spermatozoïde a une tête et un petit fouet (zweepstaartje). Avec ça, il nage de 1 à 3 mm par minute.",
+  "Wat is de eikel?":"Le gland (eikel) est le bout du pénis. Le prépuce (voorhuid) protège le gland.",
+  "Wat zijn de zwellichamen?":"Les corps caverneux (zwellichamen) sont dans le pénis. Quand le sang y afflue, le pénis devient grand et dur.",
+  "Wat is de vagina?":"Le vagin est l'organe reproducteur féminin, un canal relié à l'utérus.",
+  "Wat is de eileider?":"La trompe (eileider) est le long et étroit conduit qui mène l'ovule de l'ovaire vers l'utérus.",
+  "Wat is bevruchting?":"La fécondation est la fusion d'un ovule et d'un spermatozoïde. Ensemble, ils forment un ovule fécondé.",
+  "Wat gebeurt er als er GEEN bevruchting heeft plaatsgevonden?":"Sans fécondation, la paroi molle de l'utérus s'évacue par le vagin : c'est la menstruation.",
+  "In welk orgaan nestelt de bevruchte eicel zich?":"L'ovule fécondé descend vers l'utérus (baarmoeder) et se niche contre la paroi.",
+  "Waarvoor dient de navelstreng?":"Le cordon ombilical relie le bébé au placenta (moederkoek). Par le cordon, le bébé reçoit de l'oxygène et de la nourriture.",
+  "Geef een ander woord voor moederkoek.":"Moederkoek = placenta. Le sang de la maman le traverse et donne au bébé nourriture et oxygène.",
+  "Een zwangerschap duurt gemiddeld ... maanden.":"Une grossesse dure en moyenne 9 mois (40 semaines).",
+  "Hoeveel weegt een baby ongeveer bij de geboorte?":"À la naissance, le bébé pèse environ 2,5 à 4 kg et mesure environ 50 cm.",
+  "Wat zijn weeën?":"Les contractions (weeën) sont de fortes crampes. Quand la femme enceinte les ressent, la naissance est proche.",
+  "Wat betekent 'het water breekt'?":"Quand les membranes (vruchtvliezen) se rompent, le liquide amniotique (vruchtwater) s'écoule par le vagin. L'accouchement peut commencer.",
+  "Wat is een ander woord voor prematuur?":"Prématuré = naissance avant terme (vroeggeboorte). Le bébé doit alors souvent aller en couveuse.",
+  "Bij een EENEIIGE tweeling lijken de baby's op elkaar.":"Vrai. Chez des jumeaux vrais (eeneiig), l'ovule fécondé se divise en deux ; les bébés se ressemblent.",
+  "Wat doet een condoom?":"Le préservatif recueille le sperme lors de l'orgasme. Il protège contre la grossesse et contre des maladies comme le sida.",
+  "Wat zit er in de pil?":"La pilule contient des hormones qui empêchent la libération des ovules, ce qui exclut une grossesse."
+};
+const I18N={
+  nl:{
+    titel:"SO oefenen 🧬",
+    ondertitel:"Voor William - puberteit, voortplanting, zwangerschap en geboorte (op basis van de cursus)",
+    kiesThema:"Welk onderwerp wil je oefenen?",
+    alles:"Alles", niets:"Niets",
+    startNote:"Je krijgt vragen door elkaar. Bij een fout zie je meteen het juiste antwoord en een korte uitleg uit de les. Probeer een lange reeks goede antwoorden te halen! 🔥",
+    startKnop:"Start ▶", typPlaceholder:"Typ je antwoord ...",
+    controleer:"Controleer", volgende:"Volgende ▶", stoppen:"Stoppen",
+    klaar:"Klaar!", mail:"📧 Stuur naar papa", opnieuwFout:"Oefen de fouten opnieuw", terug:"Terug naar start",
+    voetnoot:"Werkt op computer, tablet en gsm. Alles blijft op dit toestel.",
+    vraag:"Vraag", score:"Score", opRij:"op rij", langsteReeks:"Langste reeks",
+    juisteAntwoord:"Juiste antwoord", nogTeHerhalen:"Nog te herhalen", geenFouten:"Geen fouten! ✔",
+    kiesMin:"Kies minstens 1 onderwerp.",
+    eindPerfect:"Perfect! Je kent de leerstof! Klaar voor de toets. 🏆",
+    eindGoed:"Heel goed! Nog even de laatste foutjes herhalen.",
+    eindOk:"Goed bezig! Oefen de fouten nog eens.",
+    eindLaag:"Blijf oefenen, je raakt er wel! Lees de uitleg goed.",
+    psNieuw:"🎮 Thema gemeesterd! Je verdient <b>$ min</b> PlayStation! 🎉",
+    psAl:"🎮 Top, alles juist! Dit thema had je al gemeesterd.",
+    psBijna:"🎮 Voor 10 minuten PlayStation: dit thema <b>zonder fouten</b> afwerken. Bijna!",
+    goedMsg:["Top! 🎉","Bingo! ✅","Pico bello! 🌟","Yes! 💪","Goed bezig! 👏","Helemaal juist! 🧠","Knap! ⭐"],
+    foutMsg:["Bijna! 🤏","Oei, net niet.","Geen probleem, kijk even:","Volgende keer beter! 💡"],
+    herhaling:"herhaling"
+  },
+  fr:{
+    titel:"Exercices SO 🧬",
+    ondertitel:"Pour William - puberté, reproduction, grossesse et naissance (sur base du cours)",
+    kiesThema:"Quel sujet veux-tu exercer ?",
+    alles:"Tout", niets:"Rien",
+    startNote:"Les questions arrivent dans le désordre. En cas d'erreur, tu vois tout de suite la bonne réponse et une courte explication du cours. Essaie de faire une longue série de bonnes réponses ! 🔥",
+    startKnop:"Commencer ▶", typPlaceholder:"Tape ta réponse ...",
+    controleer:"Vérifier", volgende:"Suivant ▶", stoppen:"Arrêter",
+    klaar:"Terminé !", mail:"📧 Envoyer à papa", opnieuwFout:"Refaire les erreurs", terug:"Retour au début",
+    voetnoot:"Marche sur ordinateur, tablette et gsm. Tout reste sur cet appareil.",
+    vraag:"Question", score:"Score", opRij:"d'affilée", langsteReeks:"Plus longue série",
+    juisteAntwoord:"Bonne réponse", nogTeHerhalen:"À revoir", geenFouten:"Aucune erreur ! ✔",
+    kiesMin:"Choisis au moins 1 sujet.",
+    eindPerfect:"Parfait ! Tu connais la matière ! Prêt pour le test. 🏆",
+    eindGoed:"Très bien ! Revois encore les dernières petites erreurs.",
+    eindOk:"Bien joué ! Refais encore les erreurs.",
+    eindLaag:"Continue, tu vas y arriver ! Lis bien les explications.",
+    psNieuw:"🎮 Sujet maîtrisé ! Tu gagnes <b>$ min</b> de PlayStation ! 🎉",
+    psAl:"🎮 Super, tout juste ! Ce sujet était déjà maîtrisé.",
+    psBijna:"🎮 Pour 10 minutes de PlayStation : termine ce sujet <b>sans faute</b>. Presque !",
+    goedMsg:["Génial ! 🎉","Bingo ! ✅","Super ! 🌟","Oui ! 💪","Bien joué ! 👏","Tout juste ! 🧠","Bravo ! ⭐"],
+    foutMsg:["Presque ! 🤏","Oups, pas tout à fait.","Pas grave, regarde :","La prochaine fois ! 💡"],
+    herhaling:"révision"
+  }
+};
+let lang = (function(){ try{return localStorage.getItem("lang")||"nl";}catch(e){return "nl";} })();
+function t(k){ return (I18N[lang]&&I18N[lang][k]!=null)?I18N[lang][k]:I18N.nl[k]; }
+function uitlegVan(v){ return (lang==="fr" && SO_UF[v.q]) ? SO_UF[v.q] : v.u; }
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-i18n]").forEach(el=>{ const s=t(el.dataset.i18n); if(s!=null) el.innerHTML=s; });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el=>{ const s=t(el.dataset.i18nPh); if(s!=null) el.placeholder=s; });
+  const lb=$("langBtn"); if(lb) lb.textContent = lang==="nl" ? "🇫🇷 FR" : "🇳🇱 NL";
+}
+let goedMsg=I18N[lang].goedMsg, foutMsg=I18N[lang].foutMsg;
 
 // thema-chips
 const tk=$("themaKeuze");
@@ -364,7 +467,7 @@ function requeue(v){
 }
 
 function start(){
-  if(gekozen.size===0){alert("Kies minstens 1 onderwerp.");return;}
+  if(gekozen.size===0){alert(t("kiesMin"));return;}
   let lijst=VRAGEN.filter(v=>gekozen.has(v.th));
   vragen=meng(lijst).map(v=>{
     if(v.t==="mc"){
@@ -421,11 +524,11 @@ function toonVraag(){
   $("feedback").className="feedback"; $("feedback").innerHTML="";
   $("volgendeBtn").classList.add("verstop");
   $("checkBtn").classList.remove("verstop");
-  $("telLinks").textContent="Vraag "+(idx+1)+" / "+vragen.length;
-  $("telRechts").textContent="Score: "+score;
-  $("streak").textContent= streak>=3 ? ("🔥 "+streak+" op rij") : "";
+  $("telLinks").textContent=t("vraag")+" "+(idx+1)+" / "+vragen.length;
+  $("telRechts").textContent=t("score")+": "+score;
+  $("streak").textContent= streak>=3 ? ("🔥 "+streak+" "+t("opRij")) : "";
   $("balkVul").style.width=(idx/vragen.length*100)+"%";
-  $("badge").textContent = v.th + (v._isHerhaling ? "  🔁 herhaling" : "");
+  $("badge").textContent = v.th + (v._isHerhaling ? ("  🔁 "+t("herhaling")) : "");
   $("icThema").textContent = ICONEN[v.th] || "❓";
   $("vraagTekst").textContent=v.q;
   const q=$("quiz"); q.classList.remove("shake","goedflits","vraag-in"); void q.offsetWidth; q.classList.add("vraag-in");
@@ -455,7 +558,7 @@ function kiesOptie(btn,op,v){
   if(beantwoord) return; beantwoord=true;
   $("optieBlok").querySelectorAll(".optie").forEach(k=>k.disabled=true);
   trackAntwoord(v, op.goed);
-  if(op.goed){ goedGeantwoord(v.u); btn.classList.add("goed"); }
+  if(op.goed){ goedGeantwoord(uitlegVan(v)); btn.classList.add("goed"); }
   else{
     btn.classList.add("fout");
     $("optieBlok").querySelectorAll(".optie").forEach(k=>{ if(k.textContent===correctTekst(v)) k.classList.add("goed"); });
@@ -471,7 +574,7 @@ function checkType(){
   beantwoord=true; inp.disabled=true;
   const ok=v.a.some(ans=>norm(ans)===geg);
   trackAntwoord(v, ok);
-  if(ok){ goedGeantwoord(v.u); }
+  if(ok){ goedGeantwoord(uitlegVan(v)); }
   else{ foutGeantwoord(v, v.a[0]); }
   naVraag();
 }
@@ -485,16 +588,17 @@ function goedGeantwoord(uitleg){
 function foutGeantwoord(v, juist){
   streak=0; fouten.push(v); requeue(v);
   flits("shake");
+  const uit=uitlegVan(v);
   const f=$("feedback"); f.className="feedback nok";
-  f.innerHTML="<b>"+pick(foutMsg,idx)+"</b> Juiste antwoord: <b>"+juist+"</b>"+(v.u?"<div class='uitleg'>"+v.u+"</div>":"");
+  f.innerHTML="<b>"+pick(foutMsg,idx)+"</b> "+t("juisteAntwoord")+": <b>"+juist+"</b>"+(uit?"<div class='uitleg'>"+uit+"</div>":"");
 }
 
 function naVraag(){
   $("checkBtn").classList.add("verstop");
   $("volgendeBtn").classList.remove("verstop");
-  $("telRechts").textContent="Score: "+score;
+  $("telRechts").textContent=t("score")+": "+score;
   const st=$("streak");
-  st.textContent= streak>=3 ? ("🔥 "+streak+" op rij") : "";
+  st.textContent= streak>=3 ? ("🔥 "+streak+" "+t("opRij")) : "";
   if(streak>=3){ st.classList.remove("hot"); void st.offsetWidth; st.classList.add("hot"); }
   $("volgendeBtn").focus();
 }
@@ -509,36 +613,36 @@ function eindscherm(vroeg){
     const nieuw=recordSessie();
     const monothema = (gekozen.size===1);
     if(nieuw.length){
-      psEl.innerHTML="<div class='ps-vak'>🎮 Thema gemeesterd! Je verdient <b>"+(nieuw.length*10)+" minuten PlayStation</b>! 🎉</div>";
+      psEl.innerHTML="<div class='ps-vak'>"+t("psNieuw").replace("$",(nieuw.length*10))+"</div>";
       confetti(true); setTimeout(()=>confetti(true),300);
     } else if(monothema && fouten.length===0){
-      psEl.innerHTML="<div class='ps-vak'>🎮 Top, alles juist! Dit thema had je al gemeesterd.</div>";
+      psEl.innerHTML="<div class='ps-vak'>"+t("psAl")+"</div>";
     } else if(monothema){
-      psEl.innerHTML="<div class='ps-vak'>🎮 Voor 10 minuten PlayStation: dit thema <b>zonder fouten</b> afwerken. Bijna!</div>";
+      psEl.innerHTML="<div class='ps-vak'>"+t("psBijna")+"</div>";
     }
   }
   $("eindScore").textContent=score+" / "+vragen.length;
   const pct=vragen.length?Math.round(score/vragen.length*100):0;
-  let t, e;
-  if(pct===100){t="Perfect! Je kent de leerstof! Klaar voor de toets. 🏆"; e="🏆";}
-  else if(pct>=80){t="Heel goed! Nog even de laatste foutjes herhalen."; e="🎉";}
-  else if(pct>=60){t="Goed bezig! Oefen de fouten nog eens."; e="👍";}
-  else {t="Blijf oefenen, je raakt er wel! Lees de uitleg goed."; e="💪";}
+  let tekst, e;
+  if(pct===100){tekst=t("eindPerfect"); e="🏆";}
+  else if(pct>=80){tekst=t("eindGoed"); e="🎉";}
+  else if(pct>=60){tekst=t("eindOk"); e="👍";}
+  else {tekst=t("eindLaag"); e="💪";}
   const em=$("eindEmoji"); em.textContent=e;
   em.classList.remove("bonk"); void em.offsetWidth; em.classList.add("bonk");
   if(pct>=80){ confetti(true); setTimeout(()=>confetti(true),350); }
-  $("eindTekst").innerHTML=t+" ("+pct+"%)<br><small class='note'>Langste reeks: 🔥 "+maxStreak+"</small>";
+  $("eindTekst").innerHTML=tekst+" ("+pct+"%)<br><small class='note'>"+t("langsteReeks")+": 🔥 "+maxStreak+"</small>";
 
   const fl=$("foutenLijst");
   const uniek=dedupe(fouten);
   if(uniek.length){
-    let h="<h2 style='font-size:16px;margin:14px 0 8px'>Nog te herhalen ("+uniek.length+"):</h2><ul>";
+    let h="<h2 style='font-size:16px;margin:14px 0 8px'>"+t("nogTeHerhalen")+" ("+uniek.length+"):</h2><ul>";
     uniek.forEach(f=>{
       const juist = (f.t==="type") ? f.a[0] : correctTekst(f);
       h+="<li>"+f.q+" → <b>"+juist+"</b></li>";
     });
     h+="</ul>"; fl.innerHTML=h; $("opnieuwFoutBtn").style.display="";
-  } else { fl.innerHTML="<p style='color:var(--groen);font-weight:700'>Geen fouten! ✔</p>"; $("opnieuwFoutBtn").style.display="none"; }
+  } else { fl.innerHTML="<p style='color:var(--groen);font-weight:700'>"+t("geenFouten")+"</p>"; $("opnieuwFoutBtn").style.display="none"; }
 }
 
 $("opnieuwFoutBtn").onclick=()=>{
@@ -558,6 +662,17 @@ $("mailBtn").onclick=()=>{
 $("opnieuwBtn").onclick=()=>{ $("einde").classList.add("verstop"); $("start").classList.remove("verstop"); };
 $("startBtn").onclick=start;
 $("stopBtn").onclick=()=>eindscherm(true);
+$("langBtn").onclick=()=>{
+  lang = (lang==="nl") ? "fr" : "nl";
+  try{ localStorage.setItem("lang",lang); }catch(e){}
+  goedMsg=I18N[lang].goedMsg; foutMsg=I18N[lang].foutMsg;
+  applyLang();
+  if(!$("quiz").classList.contains("verstop") && vragen[idx]){
+    $("telLinks").textContent=t("vraag")+" "+(idx+1)+" / "+vragen.length;
+    $("telRechts").textContent=t("score")+": "+score;
+  }
+};
+applyLang();
 toonGameBadge();
 $("checkBtn").onclick=checkType;
 $("volgendeBtn").onclick=volgende;

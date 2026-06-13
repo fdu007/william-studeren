@@ -17,6 +17,7 @@
   .navlinks a{text-decoration:none; font-size:.9rem; font-weight:600; padding:8px 14px; border-radius:999px; border:1px solid #e2e8f0; color:#0f172a; background:#fff; white-space:nowrap;}
   .navlinks a.on{background:#0f172a; color:#fff; border-color:#0f172a;}
   .gamebadge{font-weight:800; font-size:.8rem; background:#1d2733; color:#fff; padding:6px 11px; border-radius:999px;}
+  .langbtn{font-weight:700; font-size:.82rem; padding:7px 12px; border-radius:999px; border:1px solid #e2e8f0; background:#fff; color:#0f172a; cursor:pointer;}
 
   .card{background:#fff; border:1px solid #e2e8f0; border-radius:14px; padding:18px; margin-bottom:16px; box-shadow:0 2px 8px rgba(30,50,90,.05);}
   h2{font-size:17px; margin:0 0 12px; color:#23314a;}
@@ -57,54 +58,85 @@
       <a href="so-oefenen.html">🧬 SO</a>
       <a href="spelling-oefenen.html">✍️ Spelling</a>
       <a href="stats.html" class="on">📊 Stats</a>
+      <button class="langbtn" id="langBtn">🇫🇷 FR</button>
       <span class="gamebadge" id="gameBadge">🎮 0 min</span>
     </div>
   </nav>
 
-  <h1>📊 Mijn vooruitgang</h1>
-  <p class="sub">Hier zie je hoe goed je elk thema al kent, William.</p>
+  <h1 data-i18n="titel">📊 Mijn vooruitgang</h1>
+  <p class="sub" data-i18n="sub">Hier zie je hoe goed je elk thema al kent, William.</p>
 
   <div class="card">
-    <h2>Samenvatting</h2>
+    <h2 data-i18n="samenvatting">Samenvatting</h2>
     <div class="stats-row">
-      <div class="stat ps"><b id="sPs">0</b><span>minuten PlayStation 🎮</span></div>
-      <div class="stat"><b id="sMeester">0</b><span>thema's gemeesterd</span></div>
-      <div class="stat"><b id="sGem">-</b><span>gemiddelde score</span></div>
-      <div class="stat"><b id="sSessies">0</b><span>oefensessies</span></div>
+      <div class="stat ps"><b id="sPs">0</b><span data-i18n="minPs">minuten PlayStation 🎮</span></div>
+      <div class="stat"><b id="sMeester">0</b><span data-i18n="gemeesterd">thema's gemeesterd</span></div>
+      <div class="stat"><b id="sGem">-</b><span data-i18n="gemScore">gemiddelde score</span></div>
+      <div class="stat"><b id="sSessies">0</b><span data-i18n="sessies">oefensessies</span></div>
     </div>
   </div>
 
   <div class="card aanbev">
-    <h2>👉 Wat oefen je best nog?</h2>
+    <h2 data-i18n="watNog">👉 Wat oefen je best nog?</h2>
     <div id="aanbevLijst"></div>
   </div>
 
   <div class="card">
-    <h2>Per thema</h2>
+    <h2 data-i18n="perThema">Per thema</h2>
     <div id="themaLijst"></div>
   </div>
 
   <div class="card" style="text-align:center;">
-    <button class="btn rood" id="resetBtn">Vooruitgang wissen</button>
+    <button class="btn rood" id="resetBtn" data-i18n="wissen">Vooruitgang wissen</button>
   </div>
 
-  <p style="text-align:center;color:#8a93a3;font-size:12px;">Alles blijft op dit toestel - niets wordt verstuurd.</p>
+  <p style="text-align:center;color:#8a93a3;font-size:12px;" data-i18n="voet">Alles blijft op dit toestel - niets wordt verstuurd.</p>
 </div>
 
 <script>
 const KEY="william_studeren_v1";
+const I18N={
+  nl:{ titel:"📊 Mijn vooruitgang", sub:"Hier zie je hoe goed je elk thema al kent, William.",
+    samenvatting:"Samenvatting", minPs:"minuten PlayStation 🎮", gemeesterd:"thema's gemeesterd",
+    gemScore:"gemiddelde score", sessies:"oefensessies", watNog:"👉 Wat oefen je best nog?", perThema:"Per thema",
+    wissen:"Vooruitgang wissen", voet:"Alles blijft op dit toestel - niets wordt verstuurd.",
+    soVak:"🧬 SO", spVak:"✍️ Spelling", regels:"Spellingregels", woordpakket:"Woordpakket",
+    xGeoefend:"x geoefend", nietGeoefend:"nog niet geoefend", isGemeesterd:"gemeesterd ✅",
+    oefen:"Oefen", nu:"nu", haal:"Haal 100% voor 10 min PlayStation!", allesGem:"🏆 Alles gemeesterd! Super gedaan, William!",
+    bevestig:"Alle vooruitgang en PlayStation-minuten wissen?" },
+  fr:{ titel:"📊 Mes progrès", sub:"Ici tu vois à quel point tu connais déjà chaque sujet, William.",
+    samenvatting:"Résumé", minPs:"min de PlayStation 🎮", gemeesterd:"sujets maîtrisés",
+    gemScore:"score moyen", sessies:"séances d'exercice", watNog:"👉 Que vaut-il mieux encore exercer ?", perThema:"Par sujet",
+    wissen:"Effacer les progrès", voet:"Tout reste sur cet appareil - rien n'est envoyé.",
+    soVak:"🧬 SO", spVak:"✍️ Orthographe", regels:"Règles d'orthographe", woordpakket:"Woordpakket",
+    xGeoefend:"x exercé", nietGeoefend:"pas encore exercé", isGemeesterd:"maîtrisé ✅",
+    oefen:"Exerce", nu:"actuellement", haal:"Atteins 100% pour 10 min de PlayStation !", allesGem:"🏆 Tout maîtrisé ! Bravo, William !",
+    bevestig:"Effacer tous les progrès et les minutes PlayStation ?" }
+};
+let lang=(function(){ try{return localStorage.getItem("lang")||"nl";}catch(e){return "nl";} })();
+function t(k){ return (I18N[lang]&&I18N[lang][k]!=null)?I18N[lang][k]:I18N.nl[k]; }
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-i18n]").forEach(el=>{ const s=t(el.dataset.i18n); if(s!=null) el.textContent=s; });
+  document.getElementById("langBtn").textContent = lang==="nl" ? "🇫🇷 FR" : "🇳🇱 NL";
+  render();
+}
 // alle bekende thema's (ook nog niet geoefende tonen we op 0%)
 const SO=["Puberteit","Jongen","Meisje","Organen","Baby"];
 const WP=[9,10,11,12,13,14,15,16,17,18];
-const LABELS={};
-SO.forEach(t=>LABELS["SO:"+t]={naam:t, vak:"🧬 SO", oef:"so-oefenen.html"});
-WP.forEach(n=>LABELS["SP:WP"+n]={naam:"Woordpakket "+n, vak:"✍️ Spelling", oef:"spelling-oefenen.html"});
-LABELS["SP:regels"]={naam:"Spellingregels", vak:"✍️ Spelling", oef:"spelling-oefenen.html"};
+function bouwLabels(){
+  const L={};
+  SO.forEach(th=>L["SO:"+th]={naam:th, vak:t("soVak"), oef:"so-oefenen.html"});
+  WP.forEach(n=>L["SP:WP"+n]={naam:t("woordpakket")+" "+n, vak:t("spVak"), oef:"spelling-oefenen.html"});
+  L["SP:regels"]={naam:t("regels"), vak:t("spVak"), oef:"spelling-oefenen.html"};
+  return L;
+}
 
 function laad(){ try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};} }
 function kleur(p){ return p>=100?"#2f8f4e":p>=60?"#e8841a":p>0?"#c0392b":"#c3cad6"; }
 
 function render(){
+  const LABELS=bouwLabels();
   const p=laad(); const themes=p.themes||{}; const g=p.global||{};
   const psMin=p.psMin||0;
   document.getElementById("gameBadge").textContent="🎮 "+psMin+" min";
@@ -118,35 +150,36 @@ function render(){
   // per thema, gegroepeerd
   let html=""; let huidigVak="";
   alle.forEach(k=>{
-    const lab=LABELS[k]; const t=themes[k]||{best:0,tries:0,mastered:false};
+    const lab=LABELS[k]; const st=themes[k]||{best:0,tries:0,mastered:false};
     if(lab.vak!==huidigVak){ huidigVak=lab.vak;
-      html+="<div class='groeptitel"+(huidigVak.indexOf("Spelling")>=0?" sp":"")+"'>"+huidigVak+"</div>"; }
+      html+="<div class='groeptitel"+(k.indexOf("SP:")===0?" sp":"")+"'>"+huidigVak+"</div>"; }
     html+="<div class='thema'><div class='tnaam'>"+lab.naam+
-          "<small>"+(t.tries?t.tries+"x geoefend":"nog niet geoefend")+(t.mastered?" &middot; gemeesterd ✅":"")+"</small></div>"+
-          "<div class='bar'><i style='width:"+(t.best||0)+"%;background:"+kleur(t.best||0)+"'></i></div>"+
-          "<div class='pct' style='color:"+kleur(t.best||0)+"'>"+(t.best||0)+"%</div></div>";
+          "<small>"+(st.tries?(st.tries+t("xGeoefend")):t("nietGeoefend"))+(st.mastered?(" &middot; "+t("isGemeesterd")):"")+"</small></div>"+
+          "<div class='bar'><i style='width:"+(st.best||0)+"%;background:"+kleur(st.best||0)+"'></i></div>"+
+          "<div class='pct' style='color:"+kleur(st.best||0)+"'>"+(st.best||0)+"%</div></div>";
   });
   document.getElementById("themaLijst").innerHTML=html;
 
   // aanbevelingen: niet-gemeesterde thema's, zwakste eerst
-  const teDoen=alle.map(k=>({k, t:themes[k]||{best:0,mastered:false}}))
-                   .filter(x=>!x.t.mastered)
-                   .sort((a,b)=>(a.t.best||0)-(b.t.best||0))
+  const teDoen=alle.map(k=>({k, st:themes[k]||{best:0,mastered:false}}))
+                   .filter(x=>!x.st.mastered)
+                   .sort((a,b)=>(a.st.best||0)-(b.st.best||0))
                    .slice(0,3);
   const al=document.getElementById("aanbevLijst");
   if(teDoen.length){
     al.innerHTML=teDoen.map(x=>{ const lab=LABELS[x.k];
-      return "<a href='"+lab.oef+"'><span style='font-size:22px'>🎯</span><span>Oefen <b>"+lab.naam+"</b> ("+lab.vak+") - nu "+(x.t.best||0)+"%. Haal 100% voor 10 min PlayStation!</span></a>";
+      return "<a href='"+lab.oef+"'><span style='font-size:22px'>🎯</span><span>"+t("oefen")+" <b>"+lab.naam+"</b> ("+lab.vak+") - "+t("nu")+" "+(x.st.best||0)+"%. "+t("haal")+"</span></a>";
     }).join("");
   } else {
-    al.innerHTML="<p class='leeg'>🏆 Alles gemeesterd! Super gedaan, William!</p>";
+    al.innerHTML="<p class='leeg'>"+t("allesGem")+"</p>";
   }
 }
 
+document.getElementById("langBtn").onclick=()=>{ lang=(lang==="nl")?"fr":"nl"; try{localStorage.setItem("lang",lang);}catch(e){} applyLang(); };
 document.getElementById("resetBtn").onclick=()=>{
-  if(confirm("Alle vooruitgang en PlayStation-minuten wissen?")){ localStorage.removeItem(KEY); render(); }
+  if(confirm(t("bevestig"))){ localStorage.removeItem(KEY); render(); }
 };
-render();
+applyLang();
 </script>
 </body>
 </html>
