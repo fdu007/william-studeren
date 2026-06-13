@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="nl-BE">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<title>Studiefiche Spelling</title>
+<style>
+  :root {
+    --blauw: #1b6fc4;
+    --lichtblauw: #e8f1fb;
+    --oranje: #e8841a;
+    --lichtoranje: #fdf0e0;
+    --groen: #2f8f4e;
+    --grijs: #555;
+    --lijn: #cfd8e3;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Calibri, Arial, sans-serif;
+    color: #222;
+    line-height: 1.45;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 24px;
+    font-size: 14px;
+  }
+  h1 { color: var(--blauw); font-size: 24px; margin: 0 0 4px; }
+  .ondertitel { color: var(--grijs); font-size: 13px; margin-bottom: 18px; }
+  h2 {
+    color: #fff; background: var(--blauw);
+    padding: 6px 12px; border-radius: 6px;
+    font-size: 16px; margin: 26px 0 12px;
+  }
+  .kaart {
+    border: 1px solid var(--lijn);
+    border-left: 5px solid var(--oranje);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    background: #fff;
+    page-break-inside: avoid;
+  }
+  .kaart h3 {
+    margin: 0 0 8px; color: var(--blauw); font-size: 17px;
+  }
+  .regel { font-weight: 700; margin: 10px 0 2px; }
+  .vb {
+    background: var(--lichtblauw);
+    border-radius: 5px; padding: 4px 10px; margin: 4px 0;
+    display: inline-block; font-size: 13px;
+  }
+  .let-op {
+    background: var(--lichtoranje);
+    border-left: 4px solid var(--oranje);
+    padding: 6px 10px; border-radius: 4px; margin: 8px 0; font-size: 13px;
+  }
+  ul { margin: 4px 0 6px; padding-left: 20px; }
+  li { margin-bottom: 4px; }
+  b.fout { color: #c0392b; }
+  b.goed { color: var(--groen); }
+  b.term { color: var(--oranje); }
+  table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 13px; }
+  th, td { border: 1px solid var(--lijn); padding: 6px 8px; text-align: left; }
+  th { background: var(--lichtblauw); color: var(--blauw); }
+  .intro {
+    background: var(--lichtoranje); border-radius: 6px;
+    padding: 12px 16px; font-size: 13px; margin-bottom: 10px;
+  }
+  .printknop {
+    background: var(--blauw); color:#fff; border:none; padding:8px 16px;
+    border-radius:6px; cursor:pointer; font-size:14px; margin-bottom:10px;
+  }
+  @media print {
+    body { padding: 0; font-size: 13.5px; }
+    h1, h2, h3, .kaart, .intro, .let-op, .vb, th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .noprint { display: none; }
+    /* 1 kaart = 1 pagina */
+    .kaart { page-break-after: always; break-after: page; padding: 18px 22px; font-size: 15px; }
+    .kaart:last-of-type { page-break-after: auto; }
+    .kaart h3 { font-size: 19px; }
+    h2 { page-break-before: always; break-before: page; page-break-after: avoid; }
+    h1, .ondertitel, .intro { page-break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<button class="printknop noprint" onclick="window.print()">Afdrukken</button>
+
+<h1>Studiefiche Spelling</h1>
+<p class="ondertitel">Hoofdletters - aanhalingsteken - koppelteken - apostrof - werkwoorden &nbsp;|&nbsp; Naam: William</p>
+
+<div class="intro">
+<b>Hoe studeer ik dit?</b> Lees per kaart de <b>regel</b> en bekijk de <span class="vb">voorbeelden</span>. Dek daarna de voorbeelden af en bedenk er zelf eentje. Let goed op de <b class="term">let op</b>-kaders: daar zitten de valstrikken waar je punten kunt verliezen.
+</div>
+
+<h2>1. De hoofdletters</h2>
+
+<div class="kaart">
+  <h3>Wanneer schrijf je een hoofdletter?</h3>
+
+  <p class="regel">Je schrijft een hoofdletter bij:</p>
+  <ul>
+    <li>het eerste woord van een zin
+      <div class="let-op" style="margin:4px 0;"><b class="term">Let op:</b> begint de zin met een apostrof, dan krijgt het tweede woord een hoofdletter. <span class="vb">'s Ochtends</span></div>
+    </li>
+    <li>persoonsnamen &nbsp; <span class="vb">Tine</span></li>
+    <li>aardrijkskundige namen (landen, straten, plaatsen, provincies, rivieren, bergen) &nbsp; <span class="vb">Afrika</span></li>
+    <li>afleidingen van aardrijkskundige namen (talen, nationaliteiten) &nbsp; <span class="vb">Afrikaans</span> <span class="vb">Franse</span> <span class="vb">West-Vlaamse</span> <span class="vb">Belgisch</span> <span class="vb">Duits</span></li>
+    <li>namen van (kerkelijke) feestdagen &nbsp; <span class="vb">Nieuwjaar</span> <span class="vb">Allerheiligen</span></li>
+    <li>personen en zaken die als heilig worden beschouwd &nbsp; <span class="vb">Pater Damiaan</span></li>
+  </ul>
+
+  <div class="let-op"><b class="term">Je schrijft GEEN hoofdletter bij:</b> weekdagen - maanden - seizoenen - windrichtingen.</div>
+</div>
+
+<h2>2. Het aanhalingsteken</h2>
+
+<div class="kaart">
+  <h3>De beginaanhaling</h3>
+  <p class="a">Dat is de aanhaling die <b>vooraan</b> de zin staat.</p>
+  <ul>
+    <li>Na de beginaanhaling komt er altijd een <b>komma</b>.</li>
+    <li>Een uitroepteken en vraagteken schrijf je <b>binnen</b> de aanhaling.</li>
+    <li>Je plaatst <b>geen punt</b> op het einde van een beginaanhaling.</li>
+  </ul>
+  <span class="vb">"In juni gaan we op zeeklassen", zei de meester.</span><br>
+  <span class="vb">"Joepie!", riepen de leerlingen.</span><br>
+  <span class="vb">"Waar gaan we heen?", vroeg Ali.</span>
+</div>
+
+<div class="kaart">
+  <h3>De eindaanhaling</h3>
+  <p class="a">Dat is de aanhaling die <b>achteraan</b> de zin staat.</p>
+  <ul>
+    <li>Voor de eindaanhaling plaats je een <b>dubbele punt</b>.</li>
+    <li>De eindaanhaling begint met een <b>hoofdletter</b>.</li>
+    <li>Alle leestekens (<b>ook de punt</b>) staan binnen de eindaanhaling.</li>
+  </ul>
+  <span class="vb">Jeroen zei: "Hopelijk is het mooi weer."</span><br>
+  <span class="vb">Julie vroeg: "Zullen we hiervoor een spaaractie op touw zetten?"</span><br>
+  <span class="vb">Meneer reageerde enthousiast: "Dat vind ik een goed idee!"</span>
+</div>
+
+<h2>3. Het koppelteken</h2>
+
+<div class="kaart">
+  <h3>Wanneer schrijf je een koppelteken?</h3>
+
+  <p class="regel">Je schrijft een koppelteken:</p>
+  <ul>
+    <li>bij samenstellingen met <b>Sint</b></li>
+    <li>bij samengestelde aardrijkskundige namen en hun afleidingen</li>
+    <li>bij samenstellingen met <b>oud</b> en <b>ex</b></li>
+    <li>tussen delen van samenstellingen om uitspraakverwarring tegen te gaan</li>
+  </ul>
+
+  <p class="regel">Net als Sint-Niklaas:</p>
+  <span class="vb">Sint-Idesbald</span> <span class="vb">Sint-Andries</span> <span class="vb">St.-Niklaas</span>
+
+  <p class="regel">Net als Oost-Vlaanderen:</p>
+  <span class="vb">Zuid-Afrikaans</span> <span class="vb">West-Europese</span> <span class="vb">Midden-Amerika</span> <span class="vb">Zuid-Korea</span> <span class="vb">Oost-Vlaams</span> <span class="vb">Zuid-Spanje</span> <span class="vb">Noord-Ierland</span>
+
+  <p class="regel">Net als oud-leerling:</p>
+  <span class="vb">oud-leraar</span> <span class="vb">oud-wielrenner</span> <span class="vb">oud-directeur</span> <span class="vb">ex-vriend</span> <span class="vb">ex-voetballer</span>
+
+  <p class="regel">Net als na-apen (uitspraakverwarring):</p>
+  <span class="vb">mee-eten</span> <span class="vb">na-apen</span> <span class="vb">zee-egel</span> <span class="vb">Onze-Lieve-Vrouwekerk</span>
+</div>
+
+<h2>4. De apostrof</h2>
+
+<div class="kaart">
+  <h3>Wanneer schrijf ik een apostrof?</h3>
+
+  <p class="regel">1. Meervoud met 's</p>
+  <p class="a">Na <b>a, i, o, u, y</b> enkel geschreven, schrijf je in het meervoud <b>'s</b>.</p>
+  <span class="vb">opa's</span> <span class="vb">baby's</span> <span class="vb">pony's</span> <span class="vb">taxi's</span> <span class="vb">risico's</span>
+
+  <p class="regel">2. Op de plaats waar je letters weglaat</p>
+  <p class="a">Daar schrijf je een ' (apostrof). Bij het begin van een zin schrijf je de hoofdletter bij het eerste <b>volledige</b> woord.</p>
+  <span class="vb">'s Ochtends</span>
+
+  <p class="regel">3. Om het bezit aan te duiden</p>
+  <p class="a">Na <b>a, i, o, u, y</b> schrijf je een <b>'s</b>.</p>
+  <span class="vb">het boek van Sara &rarr; Sara's boek</span>
+</div>
+
+<h2>5. De werkwoorden</h2>
+
+<div class="kaart">
+  <h3>De persoonsvorm vinden</h3>
+  <p class="a">De <b class="term">persoonsvorm</b> vind je door van de zin een <b>ja-neevraag</b> te maken. De persoonsvorm staat dan altijd <b>vooraan</b>.</p>
+  <span class="vb">Mijn broer fietst elke dag naar school. &rarr; Fietst mijn broer elke dag naar school? &rarr; persoonsvorm = fietst</span>
+  <p class="a" style="margin-top:8px;">De <b class="term">infinitief</b> vind je door <b>ik zal ...</b> ervoor te plaatsen. &nbsp; <span class="vb">ik zal fietsen &rarr; infinitief = fietsen</span></p>
+</div>
+
+<div class="kaart">
+  <h3>Het werkwoordschema (tegenwoordige tijd)</h3>
+  <p class="a">Stap 1: Is het vette woord een persoonsvorm? (ja-neevraag)<br>Stap 2: Wie of wat doet iets? (het onderwerp)</p>
+  <table>
+    <tr><th>Onderwerp</th><th>Vorm</th><th>Voorbeeld</th></tr>
+    <tr><td>Ik ... / ... jij? / ik?</td><td><b>stam</b></td><td>ik vind</td></tr>
+    <tr><td>Hij / zij / het / een ander</td><td><b>stam + t</b></td><td>de familie woont</td></tr>
+    <tr><td>Wij / jullie / anderen</td><td><b>infinitief</b></td><td>zij hebben</td></tr>
+  </table>
+  <div class="let-op">Is het géén persoonsvorm? &rarr; <b>Doe gewoon.</b></div>
+</div>
+
+<div class="kaart">
+  <h3>Tegenwoordige tijd (t.t.) en verleden tijd (v.t.)</h3>
+  <p class="a">Het gebeurt <b>nu</b> = tegenwoordige tijd (t.t.). Het gebeurde <b>vroeger</b> = verleden tijd (v.t.).</p>
+  <table>
+    <tr><th>infinitief</th><th>t.t.</th><th>v.t.</th></tr>
+    <tr><td>rijden</td><td>ik rijd</td><td>ik reed</td></tr>
+    <tr><td>lopen</td><td>Kim loopt</td><td>Kim liep</td></tr>
+    <tr><td>broeden</td><td>de kip broedt</td><td>de kip broedde</td></tr>
+    <tr><td>zeggen</td><td>de juf zegt</td><td>de juf zei</td></tr>
+    <tr><td>zetten</td><td>jij zet</td><td>jij zette</td></tr>
+    <tr><td>praten</td><td>mama praat</td><td>mama praatte</td></tr>
+    <tr><td>landen</td><td>de raket landt</td><td>de raket landde</td></tr>
+    <tr><td>branden</td><td>het brandt</td><td>het brandde</td></tr>
+  </table>
+</div>
+
+<div class="kaart">
+  <h3>Het voltooid deelwoord (be- en ge-)</h3>
+  <ul>
+    <li><b>be-</b> en <b>ge-</b> + <b>a</b> of <b>o</b> &rarr; er is geen uitspraakverwarring, dus <b>doe gewoon</b>.
+      <br><span class="vb">geautomatiseerd</span> <span class="vb">beademd</span> <span class="vb">gearriveerd</span></li>
+    <li><b>be-</b> en <b>ge-</b> + <b>e</b> of <b>i</b> &rarr; er komt een <b class="term">trema</b> op de e of i, omdat uitspraakverwarring mogelijk is.
+      <br><span class="vb">geëindigd</span> <span class="vb">geërfd</span> <span class="vb">beïnvloed</span> <span class="vb">geïllustreerd</span> <span class="vb">geïnterviewd</span></li>
+  </ul>
+  <div class="let-op"><b class="term">d of t op het einde?</b> &rarr; Maak het woord langer!
+  <br><span class="vb">getover<b>de</b>, dus getover<b>d</b></span></div>
+</div>
+
+<h2>6. De woordpakketten 9 t.e.m. 18</h2>
+
+<div class="kaart">
+  <h3>Hoe oefen ik de woordpakketten?</h3>
+  <ul>
+    <li>Lees het woord, dek het af en schrijf het op.</li>
+    <li>Vergelijk en verbeter. Zet een vinkje bij elk woord dat je juist hebt.</li>
+    <li>Laat iemand je de moeilijke woorden dicteren.</li>
+    <li>Woorden waar je twee keer een fout op maakt: apart oefenen.</li>
+  </ul>
+  <div class="let-op"><b class="term">Let op de lidwoorden</b> (de / het) en de <b>accenten en trema's</b>: quotiënt, comité, café, patiënt ... die tellen mee!</div>
+</div>
+
+<div class="kaart">
+  <h3>Woordpakket 9</h3>
+  <table>
+    <tr><td>de revolutie</td><td>de generatie</td></tr>
+    <tr><td>de portie</td><td>de productie</td></tr>
+    <tr><td>de attractie</td><td>de adoptie</td></tr>
+    <tr><td>concreet</td><td>de/het accordeon</td></tr>
+    <tr><td>de administratie</td><td>de accu</td></tr>
+    <tr><td>inclusief</td><td>de democratie</td></tr>
+    <tr><td>de economie</td><td>de emotie</td></tr>
+    <tr><td>het effect</td><td>het succes</td></tr>
+    <tr><td>de formatie</td><td>de relatie</td></tr>
+    <tr><td>het accent</td><td>de computer</td></tr>
+  </table>
+</div>
+
+<div class="kaart">
+  <h3>Woordpakket 10</h3>
+  <table>
+    <tr><td>innerlijk</td><td>de receptie</td></tr>
+    <tr><td>wekelijks</td><td>de organisatie</td></tr>
+    <tr><td>betrekkelijk</td><td>oorspronkelijke</td></tr>
+    <tr><td>de definitie</td><td>redelijke</td></tr>
+    <tr><td>gemeenschappelijk</td><td>de quiz</td></tr>
+    <tr><td>de lucifer</td><td>maatschappelijke</td></tr>
+    <tr><td>het aquarium</td><td>de cilinder</td></tr>
+    <tr><td>het quotiënt</td><td>(de) verantwoordelijke</td></tr>
+    <tr><td>de lancering</td><td>de redactie</td></tr>
+    <tr><td>de elektriciteit</td><td>onafhankelijk</td></tr>
+  </table>
+</div>
+
+<div class="kaart">
+  <h3>Woordpakket 11</h3>
+  <table>
+    <tr><td>de examens</td><td>(de) luxe</td></tr>
+    <tr><td>de export</td><td>de sfinx</td></tr>
+    <tr><td>de expert</td><td>oké</td></tr>
+    <tr><td>het faxapparaat</td><td>het experiment</td></tr>
+    <tr><td>extra</td><td>geconcentreerd</td></tr>
+    <tr><td>de taxi</td><td>de privéjet</td></tr>
+    <tr><td>de explosie</td><td>de actrices</td></tr>
+    <tr><td>het comité</td><td>de expeditie</td></tr>
+    <tr><td>perplex</td><td>de exemplaren</td></tr>
+    <tr><td>de excuses</td><td>(het) maximum</td></tr>
+  </table>
+</div>
+
+<div class="kaart">
+  <h3>Woordpakket 12</h3>
+  <table>
+    <tr><td>de machinist</td><td>mysterieuze</td></tr>
+    <tr><td>sociaal</td><td>het stadium</td></tr>
+    <tr><td>het socialisme</td><td>de douche</td></tr>
+    <tr><td>de machine</td><td>de chocolade</td></tr>
+    <tr><td>de/het affiche</td><td>de chauffeur</td></tr>
+    <tr><td>de/het fiche</td><td>de choco</td></tr>
+    <tr><td>de chef</td><td>de lunch</td></tr>
+    <tr><td>de cheque</td><td>het medium</td></tr>
+    <tr><td>China</td><td>het pension</td></tr>
+    <tr><td>provinciaal</td><td>de wereldkampioen</td></tr>
+  </table>
+</div>
+
+<div class="kaart">
+  <h3>Woordpakket 13</h3>
+  <table>
+    <tr><td>de manege</td><td>de actualiteit</td></tr>
+    <tr><td>de publiciteit</td><td>logeren</td></tr>
+    <tr><td>de seksualiteit</td><td>de bagage</td></tr>
+    <tr><td>de garage</td><td>jongleren</td></tr>
+    <tr><td>de junior</td><td>de mentaliteit</td></tr>
+    <tr><td>de persoonlijkheid</td><td>het horloge</td></tr>
+    <tr><td>de giraf</td><td>het journaal</td></tr>
+    <tr><td>het college</td><td>de jury</td></tr>
+    <tr><td>de mensheid</td><td>de werkgelegenheid</td></tr>
+    <tr><td>de etalage</td><td>de nieuwsgierigheid</td></tr>
+  </table>
+</div>
+
+<div class="kaart">
+  <h3>Woordpakket 14</h3>
+  <table>
+    <tr><td>gezamenlijk</td><td>doch</td></tr>
+    <tr><td>enigszins</td><td>de chaos</td></tr>
+    <tr><td>het lood</td><td>de catechese</td></tr>
+    <tr><td>de luchtdruk</td><td>geenszins</td></tr>
+    <tr><td>de astronauten</td><td>de buitenwereld</td></tr>
+    <tr><td>het noodlot</td><td>de toelichting</td></tr>
+    <tr><td>de echtgenoot</td><td>de dinosauriërs</td></tr>
+    <tr><td>de autoriteit</td><td>de verdachte</td></tr>
+    <tr><td>de verplichting</td><td>de archeologen</td></tr>
+    <tr><td>openlijk</td><td>de chemotherapie</td></tr>
+  </table>
+</div>
+
+<div class="kaart">
+  <h3>Woordpakket 15</h3>
+  <table>
+    <tr><td>Brazilië</td><td>de oriëntatie</td></tr>
+    <tr><td>creatief</td><td>materiële</td></tr>
+    <tr><td>internationaal</td><td>de epidemieën</td></tr>
+    <tr><td>de reeën</td><td>de moskeeën</td></tr>
+    <tr><td>de concurrent</td><td>emotioneel</td></tr>
+    <tr><td>traditionele</td><td>industriële</td></tr>
+    <tr><td>discussiëren</td><td>(de) revolutionair</td></tr>
+    <tr><td>financiële</td><td>de poriën</td></tr>
+    <tr><td>de skiër</td><td>officiële</td></tr>
+    <tr><td>de patiënt</td><td>de encyclopedieën</td></tr>
+  </table>
+</div>
+
+<div class="kaart">
+  <h3>Woordpakket 16</h3>
+  <table>
+    <tr><td>de collega's</td><td>het stempellokaal</td></tr>
+    <tr><td>de pony's</td><td>de baby's</td></tr>
+    <tr><td>de verslaggever</td><td>de risico's</td></tr>
+    <tr><td>de individu's</td><td>het contract</td></tr>
+    <tr><td>de firma's</td><td>de verkoopprijs</td></tr>
+    <tr><td>de puppy's</td><td>de taxi's</td></tr>
+    <tr><td>de disco</td><td>de farao's</td></tr>
+    <tr><td>de ambtenaar</td><td>middellandse</td></tr>
+    <tr><td>de drama's</td><td>de hobby's</td></tr>
+    <tr><td>het aspect</td><td>de pyjama's</td></tr>
+  </table>
+</div>
+
+<div class="kaart">
+  <h3>Woordpakket 17</h3>
+  <table>
+    <tr><td>de show</td><td>Franse</td></tr>
+    <tr><td>de stress</td><td>West-Vlaamse</td></tr>
+    <tr><td>de collectie</td><td>de jungle</td></tr>
+    <tr><td>de bulldozer</td><td>de reactie</td></tr>
+    <tr><td>de logica</td><td>Duits</td></tr>
+    <tr><td>het team</td><td>de keeper</td></tr>
+    <tr><td>het respect</td><td>barbecueën</td></tr>
+    <tr><td>de crash</td><td>Belgisch</td></tr>
+    <tr><td>de drugs</td><td>Afrikaanse</td></tr>
+    <tr><td>het interview</td><td>de ketchup</td></tr>
+  </table>
+</div>
+
+<div class="kaart">
+  <h3>Woordpakket 18</h3>
+  <table>
+    <tr><td>de champagne</td><td>logische</td></tr>
+    <tr><td>romantisch</td><td>democratisch</td></tr>
+    <tr><td>de deskundige</td><td>de theorie</td></tr>
+    <tr><td>de traditie</td><td>de guillotine</td></tr>
+    <tr><td>het toilet</td><td>medisch</td></tr>
+    <tr><td>de documentatie</td><td>de coupé</td></tr>
+    <tr><td>de portefeuille</td><td>de bibliotheek</td></tr>
+    <tr><td>het dessert</td><td>zelfstandig</td></tr>
+    <tr><td>de premier</td><td>de medaille</td></tr>
+    <tr><td>inwendig</td><td>de enquête</td></tr>
+  </table>
+</div>
+
+</body>
+</html>

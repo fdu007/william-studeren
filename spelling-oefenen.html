@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="nl-BE">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spelling oefenen - William</title>
+<style>
+  :root{
+    --blauw:#1b6fc4; --donker:#13548f; --lichtblauw:#e8f1fb;
+    --oranje:#e8841a; --groen:#2f8f4e; --rood:#c0392b;
+    --grijs:#5a6675; --lijn:#cfd8e3; --bg:#f4f7fb;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:"Segoe UI",Calibri,Arial,sans-serif; margin:0;
+    background:var(--bg); color:#1d2733; line-height:1.5;
+  }
+  .wrap{max-width:680px; margin:0 auto; padding:18px;}
+  header h1{color:var(--blauw); margin:6px 0 2px; font-size:26px;}
+  header p{color:var(--grijs); margin:0 0 16px; font-size:14px;}
+
+  .card{
+    background:#fff; border:1px solid var(--lijn); border-radius:14px;
+    padding:20px; box-shadow:0 2px 8px rgba(20,60,120,.06); margin-bottom:16px;
+  }
+  h2{color:var(--donker); font-size:18px; margin:0 0 12px;}
+
+  .btn{
+    background:var(--blauw); color:#fff; border:none; border-radius:10px;
+    padding:12px 18px; font-size:16px; cursor:pointer; font-weight:600;
+    transition:filter .15s;
+  }
+  .btn:hover{filter:brightness(1.08);}
+  .btn:disabled{opacity:.45; cursor:default;}
+  .btn.sec{background:#eef2f8; color:var(--donker);}
+  .btn.groot{width:100%; padding:16px; font-size:18px;}
+  .btn-row{display:flex; gap:10px; flex-wrap:wrap;}
+
+  .keuze{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0;}
+  .chip{
+    border:2px solid var(--lijn); background:#fff; border-radius:20px;
+    padding:8px 14px; cursor:pointer; font-size:14px; user-select:none;
+  }
+  .chip.aan{border-color:var(--blauw); background:var(--lichtblauw); color:var(--donker); font-weight:600;}
+
+  .balk{height:10px; background:#e3eaf3; border-radius:6px; overflow:hidden; margin:4px 0 16px;}
+  .balk > i{display:block; height:100%; background:var(--blauw); width:0; transition:width .3s;}
+  .tel{font-size:13px; color:var(--grijs); display:flex; justify-content:space-between;}
+
+  .vraag{font-size:20px; font-weight:600; margin:6px 0 14px; min-height:30px;}
+  .hint{font-size:14px; color:var(--grijs); margin-bottom:10px;}
+
+  input[type=text]{
+    width:100%; padding:14px; font-size:20px; border:2px solid var(--lijn);
+    border-radius:10px; outline:none;
+  }
+  input[type=text]:focus{border-color:var(--blauw);}
+
+  .opties{display:grid; gap:10px; margin-top:6px;}
+  .optie{
+    text-align:left; border:2px solid var(--lijn); background:#fff; border-radius:10px;
+    padding:13px 15px; font-size:17px; cursor:pointer;
+  }
+  .optie:hover{border-color:var(--blauw);}
+  .optie.goed{border-color:var(--groen); background:#eafaef;}
+  .optie.fout{border-color:var(--rood); background:#fdeded;}
+
+  .feedback{margin-top:14px; padding:13px 15px; border-radius:10px; font-size:15px; display:none;}
+  .feedback.ok{background:#eafaef; border:1px solid var(--groen); color:#1d6b39; display:block;}
+  .feedback.nok{background:#fdeded; border:1px solid var(--rood); color:#962a20; display:block;}
+  .feedback b{color:inherit;}
+  .feedback .uitleg{margin-top:6px; color:#3a4452; font-size:14px;}
+
+  .luister{
+    background:var(--oranje); color:#fff; border:none; border-radius:50%;
+    width:64px; height:64px; font-size:28px; cursor:pointer; display:block; margin:0 auto 8px;
+  }
+  .luister:active{transform:scale(.95);}
+  .midden{text-align:center;}
+
+  .eind{text-align:center;}
+  .score-groot{font-size:46px; font-weight:800; color:var(--blauw); margin:8px 0;}
+  .verstop{display:none;}
+  .vink{color:var(--groen); font-weight:700;}
+  .kruis{color:var(--rood); font-weight:700;}
+  small.note{color:var(--grijs);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Spelling oefenen</h1>
+    <p>Voor William - op basis van de cursus (Z-schrift 6)</p>
+  </header>
+
+  <!-- START -->
+  <div id="start" class="card">
+    <h2>Wat wil je oefenen?</h2>
+    <div class="keuze" id="modeKeuze">
+      <div class="chip aan" data-mode="dictee">Woorden (dictee)</div>
+      <div class="chip" data-mode="regels">Regels</div>
+      <div class="chip" data-mode="gemengd">Gemengd</div>
+    </div>
+
+    <div id="pakketBlok">
+      <h2 style="margin-top:16px;">Welke woordpakketten?</h2>
+      <div class="keuze" id="pakketKeuze"></div>
+      <div class="btn-row" style="margin-top:4px;">
+        <button class="btn sec" id="allesAan">Alles</button>
+        <button class="btn sec" id="allesUit">Niets</button>
+      </div>
+      <p class="hint" style="margin-top:12px;">
+        Bij het dictee leest de computer het woord voor met een <b>Nederlandse stem</b>.
+        Klik op de oranje knop <b>&#128266;</b> om het (opnieuw) te horen, en typ het woord.
+        Is er geen Nederlandse stem op het toestel, dan gebruikt de oefening automatisch een
+        online Nederlandse stem (internet nodig). Werkt het geluid niet?
+        Klik dan op <b>&#128065; Toon kort</b> om het woord even te zien.
+      </p>
+    </div>
+
+    <button class="btn groot" id="startBtn" style="margin-top:10px;">Start &#9654;</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz" class="card verstop">
+    <div class="tel"><span id="telLinks">Vraag 1</span><span id="telRechts">Score: 0</span></div>
+    <div class="balk"><i id="balkVul"></i></div>
+
+    <div class="midden" id="luisterBlok">
+      <button class="luister" id="luisterBtn" title="Beluister">&#128266;</button>
+      <div><button class="btn sec" id="toonBtn">&#128065; Toon kort</button></div>
+    </div>
+
+    <div class="vraag" id="vraagTekst"></div>
+    <div class="hint" id="vraagHint"></div>
+
+    <div id="invulBlok">
+      <input type="text" id="antwoord" autocomplete="off" autocorrect="off"
+             autocapitalize="off" spellcheck="false" placeholder="Typ hier ...">
+    </div>
+
+    <div class="opties verstop" id="optieBlok"></div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <div class="btn-row" style="margin-top:16px;">
+      <button class="btn" id="checkBtn">Controleer</button>
+      <button class="btn verstop" id="volgendeBtn">Volgende &#9654;</button>
+      <button class="btn sec" id="stopBtn" style="margin-left:auto;">Stoppen</button>
+    </div>
+  </div>
+
+  <!-- EINDE -->
+  <div id="einde" class="card eind verstop">
+    <h2>Klaar!</h2>
+    <div class="score-groot" id="eindScore">0 / 0</div>
+    <p id="eindTekst"></p>
+    <div id="foutenLijst" style="text-align:left;"></div>
+    <div class="btn-row" style="justify-content:center; margin-top:16px;">
+      <button class="btn" id="opnieuwFoutBtn">Oefen de fouten opnieuw</button>
+      <button class="btn sec" id="opnieuwBtn">Terug naar start</button>
+    </div>
+  </div>
+
+  <p class="midden"><small class="note">Tip: kan op de computer, de tablet of de gsm. Niets wordt bewaard of verstuurd.</small></p>
+</div>
+
+<script>
+/* ============ DATA UIT DE CURSUS ============ */
+
+// Woordpakketten 9 t.e.m. 18 (Z-schrift 6). art = lidwoord, w = woord.
+const PAKKETTEN = {
+ 9:[["de","revolutie"],["de","portie"],["de","attractie"],["","concreet"],["de","administratie"],
+    ["","inclusief"],["de","economie"],["het","effect"],["de","formatie"],["het","accent"],
+    ["de","generatie"],["de","productie"],["de","adoptie"],["de/het","accordeon"],["de","accu"],
+    ["de","democratie"],["de","emotie"],["het","succes"],["de","relatie"],["de","computer"]],
+ 10:[["","innerlijk"],["","wekelijks"],["","betrekkelijk"],["de","definitie"],["","gemeenschappelijk"],
+    ["de","lucifer"],["het","aquarium"],["het","quotiënt"],["de","lancering"],["de","elektriciteit"],
+    ["de","receptie"],["de","organisatie"],["","oorspronkelijke"],["","redelijke"],["de","quiz"],
+    ["","maatschappelijke"],["de","cilinder"],["(de)","verantwoordelijke"],["de","redactie"],["","onafhankelijk"]],
+ 11:[["de","examens"],["de","export"],["de","expert"],["het","faxapparaat"],["","extra"],
+    ["de","taxi"],["de","explosie"],["het","comité"],["","perplex"],["(de)","luxe"],
+    ["de","sfinx"],["","oké"],["het","experiment"],["","geconcentreerd"],["de","privéjet"],
+    ["de","actrices"],["de","expeditie"],["de","exemplaren"],["de","excuses"],["(het)","maximum"]],
+ 12:[["de","machinist"],["","sociaal"],["het","socialisme"],["de","machine"],["de/het","affiche"],
+    ["de/het","fiche"],["de","chef"],["de","cheque"],["","China"],["","provinciaal"],
+    ["","mysterieuze"],["het","stadium"],["de","douche"],["de","chocolade"],["de","chauffeur"],
+    ["de","choco"],["de","lunch"],["het","medium"],["het","pension"],["de","wereldkampioen"]],
+ 13:[["de","manege"],["de","publiciteit"],["de","seksualiteit"],["de","garage"],["de","junior"],
+    ["de","persoonlijkheid"],["de","giraf"],["het","college"],["de","mensheid"],["de","actualiteit"],
+    ["","logeren"],["de","bagage"],["","jongleren"],["de","mentaliteit"],["het","horloge"],
+    ["het","journaal"],["de","jury"],["de","werkgelegenheid"],["de","etalage"],["de","nieuwsgierigheid"]],
+ 14:[["","gezamenlijk"],["","enigszins"],["het","lood"],["de","luchtdruk"],["de","astronauten"],
+    ["het","noodlot"],["de","echtgenoot"],["de","autoriteit"],["de","verplichting"],["","doch"],
+    ["de","chaos"],["de","catechese"],["","geenszins"],["de","buitenwereld"],["de","toelichting"],
+    ["de","dinosauriërs"],["de","verdachte"],["de","archeologen"],["","openlijk"],["de","chemotherapie"]],
+ 15:[["","Brazilië"],["","creatief"],["","internationaal"],["de","reeën"],["de","concurrent"],
+    ["","traditionele"],["","discussiëren"],["","financiële"],["de","oriëntatie"],["","materiële"],
+    ["de","epidemieën"],["de","moskeeën"],["","emotioneel"],["","industriële"],["(de)","revolutionair"],
+    ["de","poriën"],["de","skiër"],["de","patiënt"],["","officiële"],["de","encyclopedieën"]],
+ 16:[["de","collega's"],["de","pony's"],["de","verslaggever"],["de","individu's"],["de","firma's"],
+    ["de","puppy's"],["de","disco"],["de","ambtenaar"],["de","drama's"],["het","aspect"],
+    ["het","stempellokaal"],["de","baby's"],["de","risico's"],["het","contract"],["de","verkoopprijs"],
+    ["de","taxi's"],["de","farao's"],["","middellandse"],["de","hobby's"],["de","pyjama's"]],
+ 17:[["de","show"],["de","stress"],["de","collectie"],["de","bulldozer"],["de","logica"],
+    ["het","team"],["het","respect"],["de","crash"],["de","drugs"],["het","interview"],
+    ["","Franse"],["","West-Vlaamse"],["de","jungle"],["de","reactie"],["","Duits"],
+    ["de","keeper"],["","barbecueën"],["","Belgisch"],["","Afrikaanse"],["de","ketchup"]],
+ 18:[["de","champagne"],["","romantisch"],["de","deskundige"],["de","traditie"],["het","toilet"],
+    ["de","documentatie"],["de","portefeuille"],["het","dessert"],["","logische"],["","democratisch"],
+    ["de","theorie"],["de","guillotine"],["","medisch"],["de","coupé"],["de","bibliotheek"],
+    ["","zelfstandig"],["de","premier"],["de","medaille"],["","inwendig"],["de","enquête"]]
+};
+
+// Regelvragen, uitsluitend op basis van de cursus.
+const REGELS = [
+ // HOOFDLETTERS
+ {t:"mc", q:"Schrijf je een hoofdletter bij de namen van de maanden?",
+  o:["Nee","Ja"], a:0,
+  u:"Je schrijft GEEN hoofdletter bij weekdagen, maanden, seizoenen en windrichtingen."},
+ {t:"mc", q:"Welk woord is juist geschreven?",
+  o:["maandag","Maandag"], a:0,
+  u:"Weekdagen krijgen geen hoofdletter."},
+ {t:"mc", q:"Welk woord is juist geschreven? (taal/nationaliteit)",
+  o:["Belgisch","belgisch"], a:0,
+  u:"Afleidingen van aardrijkskundige namen (talen, nationaliteiten) krijgen WEL een hoofdletter: Franse, West-Vlaamse, Belgisch, Duits."},
+ {t:"mc", q:"De zin begint met een apostrof. Wat is juist?",
+  o:["'s Ochtends ga ik naar school.","'s ochtends ga ik naar school."], a:0,
+  u:"Begint de zin met een apostrof, dan krijgt het tweede (eerste volledige) woord de hoofdletter: 's Ochtends."},
+ {t:"mc", q:"Welke krijgt een hoofdletter?",
+  o:["de rivier de Schelde → Schelde","het seizoen de lente → Lente"], a:0,
+  u:"Aardrijkskundige namen (landen, rivieren, plaatsen ...) krijgen een hoofdletter. Seizoenen niet."},
+
+ // AANHALINGSTEKEN
+ {t:"mc", q:"Wat komt er na een BEGINaanhaling?",
+  o:["altijd een komma","altijd een punt"], a:0,
+  u:"Na de beginaanhaling komt er altijd een komma. Bv. “In juni gaan we op zeeklassen”, zei de meester."},
+ {t:"mc", q:"Wat zet je VOOR een EINDaanhaling?",
+  o:["een dubbele punt","een komma"], a:0,
+  u:"Voor de eindaanhaling plaats je een dubbele punt. Bv. Jeroen zei: “Hopelijk is het mooi weer.”"},
+ {t:"mc", q:"Waarmee begint een EINDaanhaling?",
+  o:["met een hoofdletter","met een kleine letter"], a:0,
+  u:"De eindaanhaling begint met een hoofdletter en alle leestekens (ook de punt) staan binnen de aanhaling."},
+ {t:"mc", q:"Welke zin is juist geschreven?",
+  o:["“Joepie!”, riepen de leerlingen.","“Joepie”!, riepen de leerlingen."], a:0,
+  u:"Een uitroepteken en een vraagteken schrijf je BINNEN de aanhaling."},
+
+ // KOPPELTEKEN
+ {t:"mc", q:"Welk woord schrijf je met een koppelteken?",
+  o:["Sint-Niklaas","Sintniklaas"], a:0,
+  u:"Je schrijft een koppelteken bij samenstellingen met Sint."},
+ {t:"mc", q:"Welk woord is juist?",
+  o:["oud-leerling","oudleerling"], a:0,
+  u:"Je schrijft een koppelteken bij samenstellingen met oud en ex (oud-leraar, ex-vriend)."},
+ {t:"mc", q:"Welk woord is juist?",
+  o:["Noord-Ierland","Noordierland"], a:0,
+  u:"Je schrijft een koppelteken bij samengestelde aardrijkskundige namen en hun afleidingen."},
+ {t:"mc", q:"Welk woord is juist? (om uitspraakverwarring te vermijden)",
+  o:["na-apen","naapen"], a:0,
+  u:"Tussen delen van samenstellingen schrijf je een koppelteken om uitspraakverwarring tegen te gaan: na-apen, mee-eten, zee-egel."},
+
+ // APOSTROF
+ {t:"mc", q:"Wat is het meervoud van 'opa'?",
+  o:["opa's","opas"], a:0,
+  u:"Na a, i, o, u, y enkel geschreven, schrijf je in het meervoud 's. Bv. opa's, baby's, taxi's."},
+ {t:"mc", q:"Wat is het meervoud van 'risico'?",
+  o:["risico's","risicos"], a:0,
+  u:"Na a, i, o, u, y schrijf je in het meervoud 's."},
+ {t:"mc", q:"Hoe duid je bezit aan? Het boek van Sara is ...",
+  o:["Sara's boek","Saras boek"], a:0,
+  u:"Om bezit aan te duiden schrijf je na a, i, o, u, y een 's: Sara's boek."},
+
+ // WERKWOORDEN
+ {t:"mc", q:"Hoe vind je de persoonsvorm in een zin?",
+  o:["Door van de zin een ja-neevraag te maken","Door het langste woord te zoeken"], a:0,
+  u:"De persoonsvorm vind je door van de zin een ja-neevraag te maken. De persoonsvorm staat dan altijd vooraan."},
+ {t:"mc", q:"Tegenwoordige tijd: kies de juiste vorm. 'De kip ... .' (broeden)",
+  o:["broedt","broed"], a:0,
+  u:"Hij/zij/het of 'een ander' → stam + t. De stam is 'broed', dus: de kip broedt."},
+ {t:"mc", q:"Verleden tijd van 'praten': 'Mama ... .'",
+  o:["praatte","praate"], a:0,
+  u:"Verleden tijd: praten → praatte (zoals in de cursus: maken-maakten, landen-landde)."},
+ {t:"mc", q:"Voltooid deelwoord: be-/ge- + e of i. Wat is juist?",
+  o:["geëindigd","geeindigd"], a:0,
+  u:"Bij be- en ge- + e of i komt er een TREMA op de e of i (uitspraakverwarring): geëindigd, beïnvloed, geïllustreerd."},
+ {t:"mc", q:"Schrijf je d of t? 'Het is getover... .'",
+  o:["getoverd","getovert"], a:0,
+  u:"Maak het woord langer: getover-de, dus getover-d."},
+ {t:"mc", q:"Voltooid deelwoord: be-/ge- + a of o. Wat is juist?",
+  o:["geautomatiseerd","geäutomatiseerd"], a:0,
+  u:"Bij be- en ge- + a of o is er GEEN uitspraakverwarring: doe gewoon, geen trema."}
+];
+
+/* ============ LOGICA ============ */
+const $=id=>document.getElementById(id);
+let mode="dictee";
+let gekozenPakketten=new Set([9,10,11,12,13,14,15,16,17,18]);
+let vragen=[], idx=0, score=0, fouten=[], beantwoord=false;
+
+// Pakket-chips bouwen
+const pkWrap=$("pakketKeuze");
+Object.keys(PAKKETTEN).forEach(n=>{
+  const c=document.createElement("div");
+  c.className="chip aan"; c.textContent="WP "+n; c.dataset.pk=n;
+  c.onclick=()=>{ c.classList.toggle("aan");
+    const k=+n; c.classList.contains("aan")?gekozenPakketten.add(k):gekozenPakketten.delete(k); };
+  pkWrap.appendChild(c);
+});
+$("allesAan").onclick=()=>{pkWrap.querySelectorAll(".chip").forEach(c=>{c.classList.add("aan");gekozenPakketten.add(+c.dataset.pk);});};
+$("allesUit").onclick=()=>{pkWrap.querySelectorAll(".chip").forEach(c=>c.classList.remove("aan"));gekozenPakketten.clear();};
+
+// Mode-chips
+$("modeKeuze").querySelectorAll(".chip").forEach(c=>{
+  c.onclick=()=>{
+    $("modeKeuze").querySelectorAll(".chip").forEach(x=>x.classList.remove("aan"));
+    c.classList.add("aan"); mode=c.dataset.mode;
+    $("pakketBlok").style.display = (mode==="regels") ? "none" : "";
+  };
+});
+
+// Hulpfuncties
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(((i+1)*((Math.sin(i*97.13+a.length)*10000)%1+1))%(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+// eenvoudige shuffle (geen Math.random nodig)
+function meng(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=(i*7+3)%(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function norm(s){return (s||"").toLowerCase().trim().replace(/\s+/g," ").replace(/[.’]/g,m=>m==="’"?"'":"");}
+
+function bouwDicteeVragen(){
+  let lijst=[];
+  [...gekozenPakketten].sort((a,b)=>a-b).forEach(pk=>{
+    PAKKETTEN[pk].forEach(([art,w])=>lijst.push({pk,art,w}));
+  });
+  return meng(lijst).map(it=>({
+    type:"dictee", pk:it.pk, art:it.art, w:it.w,
+    spreek:(it.art? it.art.replace(/[()]/g,"").split("/")[0]+" ":"")+it.w,
+    toon:(it.art? it.art+" ":"")+it.w
+  }));
+}
+function bouwRegelVragen(){
+  return meng(REGELS).map(r=>{
+    const paren=r.o.map((tekst,i)=>({tekst,goed:i===r.a}));
+    return {type:"mc", q:r.q, opties:meng(paren), u:r.u};
+  });
+}
+
+function start(){
+  if(mode!=="regels" && gekozenPakketten.size===0){alert("Kies minstens 1 woordpakket.");return;}
+  if(mode==="dictee") vragen=bouwDicteeVragen();
+  else if(mode==="regels") vragen=bouwRegelVragen();
+  else { // gemengd
+    vragen=meng([...bouwDicteeVragen(), ...bouwRegelVragen()]);
+  }
+  // beperk tot redelijk aantal
+  if(vragen.length>40) vragen=vragen.slice(0,40);
+  idx=0; score=0; fouten=[];
+  $("start").classList.add("verstop");
+  $("einde").classList.add("verstop");
+  $("quiz").classList.remove("verstop");
+  toonVraag();
+}
+
+function toonVraag(){
+  beantwoord=false;
+  const v=vragen[idx];
+  $("feedback").className="feedback";
+  $("feedback").innerHTML="";
+  $("volgendeBtn").classList.add("verstop");
+  $("checkBtn").classList.remove("verstop");
+  $("telLinks").textContent="Vraag "+(idx+1)+" / "+vragen.length;
+  $("telRechts").textContent="Score: "+score;
+  $("balkVul").style.width=(idx/vragen.length*100)+"%";
+
+  if(v.type==="dictee"){
+    $("luisterBlok").style.display="";
+    $("invulBlok").classList.remove("verstop");
+    $("optieBlok").classList.add("verstop");
+    $("vraagTekst").textContent="Schrijf het woord dat je hoort.";
+    $("vraagHint").innerHTML="Woordpakket "+v.pk+(v.art?" &middot; lidwoord: <b>"+v.art+"</b>":" &middot; <i>geen lidwoord</i>");
+    const inp=$("antwoord"); inp.value=""; inp.disabled=false; inp.focus();
+    setTimeout(()=>spreek(v.spreek),250);
+  } else {
+    $("luisterBlok").style.display="none";
+    $("invulBlok").classList.add("verstop");
+    $("optieBlok").classList.remove("verstop");
+    $("vraagTekst").textContent=v.q;
+    $("vraagHint").textContent="";
+    const ob=$("optieBlok"); ob.innerHTML="";
+    v.opties.forEach(op=>{
+      const b=document.createElement("button");
+      b.className="optie"; b.textContent=op.tekst;
+      b.onclick=()=>kiesOptie(b,op,v);
+      ob.appendChild(b);
+    });
+  }
+}
+
+function kiesOptie(btn,op,v){
+  if(beantwoord) return;
+  beantwoord=true;
+  const knoppen=$("optieBlok").querySelectorAll(".optie");
+  knoppen.forEach(k=>k.disabled=true);
+  if(op.goed){
+    btn.classList.add("goed"); score++;
+    feedback(true,"Juist! &#9989;",v.u);
+  }else{
+    btn.classList.add("fout");
+    knoppen.forEach(k=>{ if(k.textContent===correctTekst(v)) k.classList.add("goed"); });
+    fouten.push(v);
+    feedback(false,"Fout. Het juiste antwoord is: <b>"+correctTekst(v)+"</b>",v.u);
+  }
+  naVraag();
+}
+function correctTekst(v){return v.opties.find(o=>o.goed).tekst;}
+
+function checkDictee(){
+  if(beantwoord) return;
+  const v=vragen[idx];
+  const inp=$("antwoord");
+  const geg=norm(inp.value);
+  if(geg===""){inp.focus();return;}
+  beantwoord=true; inp.disabled=true;
+  const wOK=norm(v.w);
+  const volOK=norm(v.toon.replace(/[()]/g,"")); // met lidwoord
+  // dubbele lidwoorden (de/het) en optionele ((de)) toelaten
+  let goed=false;
+  if(geg===wOK) goed=true;
+  else if(v.art){
+    const arts=v.art.replace(/[()]/g,"").split("/");
+    arts.forEach(a=>{ if(geg===norm(a+" "+v.w)) goed=true; });
+    if(v.art.includes("(") && geg===wOK) goed=true;
+  }
+  if(goed){ score++; feedback(true,"Juist! &#9989; <b>"+v.toon+"</b>",""); }
+  else{ fouten.push(v); feedback(false,"Fout. Juist is: <b>"+v.toon+"</b>",
+        "Jij schreef: “"+inp.value.trim()+"”"); }
+  naVraag();
+}
+
+function feedback(ok,msg,uitleg){
+  const f=$("feedback");
+  f.className="feedback "+(ok?"ok":"nok");
+  f.innerHTML=msg+(uitleg?"<div class='uitleg'>"+uitleg+"</div>":"");
+}
+function naVraag(){
+  $("checkBtn").classList.add("verstop");
+  $("volgendeBtn").classList.remove("verstop");
+  $("telRechts").textContent="Score: "+score;
+  $("volgendeBtn").focus();
+}
+
+function volgende(){
+  idx++;
+  if(idx>=vragen.length) eindscherm();
+  else toonVraag();
+}
+
+function eindscherm(){
+  $("quiz").classList.add("verstop");
+  $("einde").classList.remove("verstop");
+  $("balkVul").style.width="100%";
+  $("eindScore").textContent=score+" / "+vragen.length;
+  const pct=Math.round(score/vragen.length*100);
+  let t;
+  if(pct===100) t="Perfect! Alles juist! 🎉";
+  else if(pct>=80) t="Heel goed! 👏";
+  else if(pct>=60) t="Goed bezig. Oefen de fouten nog eens.";
+  else t="Blijf oefenen, je raakt er wel! 💪";
+  $("eindTekst").textContent=t+" ("+pct+"%)";
+
+  const fl=$("foutenLijst");
+  if(fouten.length){
+    let h="<h2 style='font-size:16px;margin:14px 0 8px'>Te herhalen ("+fouten.length+"):</h2><ul>";
+    fouten.forEach(f=>{
+      if(f.type==="dictee") h+="<li><b>"+f.toon+"</b> <small class='note'>(WP "+f.pk+")</small></li>";
+      else h+="<li>"+f.q+" → <b>"+correctTekst(f)+"</b></li>";
+    });
+    h+="</ul>"; fl.innerHTML=h;
+    $("opnieuwFoutBtn").style.display="";
+  } else { fl.innerHTML="<p class='vink'>Geen fouten! ✔</p>"; $("opnieuwFoutBtn").style.display="none"; }
+}
+
+$("opnieuwFoutBtn").onclick=()=>{
+  vragen=meng(fouten.slice()); idx=0; score=0; fouten=[];
+  $("einde").classList.add("verstop"); $("quiz").classList.remove("verstop");
+  toonVraag();
+};
+$("opnieuwBtn").onclick=()=>{ $("einde").classList.add("verstop"); $("start").classList.remove("verstop"); };
+$("stopBtn").onclick=eindscherm;
+$("startBtn").onclick=start;
+$("checkBtn").onclick=()=>{ if(vragen[idx].type==="dictee") checkDictee(); };
+$("volgendeBtn").onclick=volgende;
+$("antwoord").addEventListener("keydown",e=>{
+  if(e.key==="Enter"){ if(!beantwoord) checkDictee(); else volgende(); }
+});
+$("toonBtn").onclick=()=>{
+  const v=vragen[idx]; if(v.type!=="dictee")return;
+  const vt=$("vraagTekst"); const oud=vt.textContent;
+  vt.textContent=v.toon;
+  setTimeout(()=>{ if(!beantwoord) vt.textContent="Schrijf het woord dat je hoort."; },1300);
+};
+$("luisterBtn").onclick=()=>{ const v=vragen[idx]; if(v.type==="dictee") spreek(v.spreek); };
+
+/* ---- spraak: Nederlandse stem ----
+   1) lokale NL-stem op het toestel (werkt offline)
+   2) anders: echte NL-stem online (Google) via een audio-bestand     */
+let nlStem=null, online=null;
+function kiesStem(){
+  if(!("speechSynthesis" in window)) return;
+  const st=speechSynthesis.getVoices();
+  nlStem = st.find(v=>/nl-BE/i.test(v.lang)) || st.find(v=>/nl/i.test(v.lang)) || null;
+}
+if("speechSynthesis" in window){
+  kiesStem();
+  speechSynthesis.onvoiceschanged=kiesStem;
+}
+function spreekOnline(tekst){
+  // echte Nederlandse stem (vereist internet)
+  try{ if(online){ online.pause(); } }catch(e){}
+  const url="https://translate.google.com/translate_tts?ie=UTF-8&tl=nl&client=tw-ob&q="
+            +encodeURIComponent(tekst);
+  online=new Audio(url); online.play().catch(()=>{});
+}
+function spreek(tekst){
+  // herlaad de stemlijst (soms pas later beschikbaar)
+  if(!nlStem) kiesStem();
+  if(nlStem && "speechSynthesis" in window){
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(tekst);
+    u.lang="nl-BE"; u.rate=0.85; u.voice=nlStem;
+    speechSynthesis.speak(u);
+  } else {
+    spreekOnline(tekst);   // geen lokale NL-stem -> online NL-stem
+  }
+}
+</script>
+</body>
+</html>
