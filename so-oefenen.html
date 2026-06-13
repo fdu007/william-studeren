@@ -12,7 +12,7 @@
     --grijs:#5a6675; --lijn:#dcd2ec; --bg:#f6f2fc;
   }
   *{box-sizing:border-box;}
-  body{font-family:"Segoe UI",Calibri,Arial,sans-serif; margin:0; background:var(--bg); color:#1d2733; line-height:1.5;}
+  body{font-family:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; margin:0; background:var(--bg); color:#1d2733; line-height:1.5;}
   .wrap{max-width:680px; margin:0 auto; padding:18px;}
   header h1{color:var(--paars); margin:6px 0 2px; font-size:26px;}
   header p{color:var(--grijs); margin:0 0 16px; font-size:14px;}
@@ -82,12 +82,12 @@
   .optie:active{transform:scale(.99);}
 
   /* ---- menu / topnav ---- */
-  .topnav{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:10px 0 12px; margin-bottom:8px; border-bottom:1px solid #e0d6f0;}
-  .topnav .brand{font-weight:800; text-decoration:none; color:#3a2a6b; font-size:1.05rem; margin-right:auto; display:flex; align-items:center; gap:6px;}
-  .navlinks{display:flex; gap:6px; flex-wrap:wrap;}
-  .navlinks a{text-decoration:none; font-size:.82rem; font-weight:600; padding:6px 11px; border-radius:999px; border:1px solid #d8cdec; color:#4a4060; background:#fff; white-space:nowrap;}
-  .navlinks a:hover{border-color:#7b3fbf;}
-  .navlinks a.on{background:#7b3fbf; color:#fff; border-color:#7b3fbf;}
+  .topnav{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:10px 0 14px; margin-bottom:10px; border-bottom:1px solid #e2e8f0; position:sticky; top:0; background:var(--bg); z-index:20;}
+  .topnav .brand{font-weight:800; text-decoration:none; color:#0f172a; font-size:1.15rem; margin-right:auto; display:flex; align-items:center; gap:6px;}
+  .navlinks{display:flex; gap:8px; flex-wrap:wrap;}
+  .navlinks a{text-decoration:none; font-size:.9rem; font-weight:600; padding:8px 14px; border-radius:999px; border:1px solid #e2e8f0; color:#0f172a; background:#fff; white-space:nowrap;}
+  .navlinks a:hover{border-color:#0f172a;}
+  .navlinks a.on{background:#0f172a; color:#fff; border-color:#0f172a;}
   .gamebadge{font-weight:800; font-size:.8rem; background:#1d2733; color:#fff; padding:6px 11px; border-radius:999px; white-space:nowrap;}
   .ps-vak{background:#fff7e9; border:1px solid #f0d9b0; color:#8a5a12; border-radius:10px; padding:12px 14px; margin:12px 0; font-weight:600;}
 </style>

@@ -13,7 +13,7 @@
   }
   *{box-sizing:border-box;}
   body{
-    font-family:"Segoe UI",Calibri,Arial,sans-serif; margin:0;
+    font-family:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; margin:0;
     background:var(--bg); color:#1d2733; line-height:1.5;
   }
   .wrap{max-width:680px; margin:0 auto; padding:18px;}
@@ -101,12 +101,12 @@
             font-size:30px; margin:0 auto 6px; background:var(--lichtblauw); box-shadow:inset 0 0 0 2px #cfe0f5;}
 
   /* ---- menu / topnav ---- */
-  .topnav{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:10px 0 12px; margin-bottom:8px; border-bottom:1px solid #d7e3f2;}
-  .topnav .brand{font-weight:800; text-decoration:none; color:#13548f; font-size:1.05rem; margin-right:auto; display:flex; align-items:center; gap:6px;}
-  .navlinks{display:flex; gap:6px; flex-wrap:wrap;}
-  .navlinks a{text-decoration:none; font-size:.82rem; font-weight:600; padding:6px 11px; border-radius:999px; border:1px solid #cddff0; color:#33485f; background:#fff; white-space:nowrap;}
-  .navlinks a:hover{border-color:#1b6fc4;}
-  .navlinks a.on{background:#1b6fc4; color:#fff; border-color:#1b6fc4;}
+  .topnav{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:10px 0 14px; margin-bottom:10px; border-bottom:1px solid #e2e8f0; position:sticky; top:0; background:var(--bg); z-index:20;}
+  .topnav .brand{font-weight:800; text-decoration:none; color:#0f172a; font-size:1.15rem; margin-right:auto; display:flex; align-items:center; gap:6px;}
+  .navlinks{display:flex; gap:8px; flex-wrap:wrap;}
+  .navlinks a{text-decoration:none; font-size:.9rem; font-weight:600; padding:8px 14px; border-radius:999px; border:1px solid #e2e8f0; color:#0f172a; background:#fff; white-space:nowrap;}
+  .navlinks a:hover{border-color:#0f172a;}
+  .navlinks a.on{background:#0f172a; color:#fff; border-color:#0f172a;}
   .gamebadge{font-weight:800; font-size:.8rem; background:#1d2733; color:#fff; padding:6px 11px; border-radius:999px; white-space:nowrap;}
   .ps-vak{background:#fff7e9; border:1px solid #f0d9b0; color:#8a5a12; border-radius:10px; padding:12px 14px; margin:12px 0; font-weight:600;}
 </style>
