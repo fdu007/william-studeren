@@ -766,6 +766,14 @@ $("toonBtn").onclick=()=>{
   setTimeout(()=>{ if(!beantwoord) vt.textContent=t("schrijfWoord"); },1300);
 };
 $("luisterBtn").onclick=()=>{ const v=vragen[idx]; if(v.type==="dictee") spreek(v.spreek); };
+// direct starten via de links op de startpagina (?wp=9 of ?regels=1)
+(function(){ try{ const u=new URLSearchParams(location.search);
+  const wp=u.get("wp"), rg=u.get("regels"), mix=u.get("mix");
+  const alleWp=Object.keys(PAKKETTEN).map(Number);
+  if(wp==="all"){ mode="dictee"; gekozenPakketten=new Set(alleWp); start(); }
+  else if(wp && PAKKETTEN[+wp]){ mode="dictee"; gekozenPakketten=new Set([+wp]); start(); }
+  else if(mix){ mode="gemengd"; gekozenPakketten=new Set(alleWp); start(); }
+  else if(rg){ mode="regels"; start(); } }catch(e){} })();
 
 /* ---- spraak: Nederlandse stem ----
    1) lokale NL-stem op het toestel (werkt offline)

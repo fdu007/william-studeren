@@ -677,6 +677,10 @@ toonGameBadge();
 $("checkBtn").onclick=checkType;
 $("volgendeBtn").onclick=volgende;
 $("antwoord").addEventListener("keydown",e=>{ if(e.key==="Enter"){ if(!beantwoord) checkType(); else volgende(); } });
+// direct een thema starten via de link op de startpagina (?thema=Baby)
+(function(){ try{ const u=new URLSearchParams(location.search); const th=u.get("thema");
+  if(th && THEMAS.includes(th)){ gekozen=new Set([th]); start(); }
+  else if(u.get("alles")){ gekozen=new Set(THEMAS); start(); } }catch(e){} })();
 </script>
 </body>
 </html>

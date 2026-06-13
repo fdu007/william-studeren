@@ -6,115 +6,188 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Studeren - William</title>
 <style>
+  :root{ --bg:#f1f5f9; --card:#fff; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --primary:#2563eb;
+         --radius:16px; --shadow:0 4px 16px rgba(15,23,42,.08); }
   *{box-sizing:border-box;}
-  body{font-family:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; margin:0;
-       background:linear-gradient(160deg,#eef3fb,#f6f2fc); color:#0f172a; min-height:100vh;}
-  .wrap{max-width:640px; margin:0 auto; padding:28px 18px 40px;}
-  h1{font-size:30px; margin:8px 0 2px; color:#3a2a6b;}
-  p.sub{color:#5a6675; margin:0 0 24px;}
-  .vak{margin-bottom:26px;}
-  .vak h2{font-size:18px; margin:0 0 10px; display:flex; align-items:center; gap:8px;}
-  .grid{display:grid; gap:12px;}
-  a.kaart{display:flex; align-items:center; gap:14px; text-decoration:none;
-          background:#fff; border:1px solid #dfe6f0; border-radius:14px; padding:16px 18px;
-          box-shadow:0 2px 8px rgba(40,60,120,.06); transition:transform .12s, box-shadow .12s;}
-  a.kaart:hover{transform:translateY(-2px); box-shadow:0 6px 16px rgba(40,60,120,.12);}
-  .ic{font-size:30px; width:44px; text-align:center;}
-  .txt b{display:block; font-size:17px; color:#1d2733;}
-  .txt span{font-size:13px; color:#6b7686;}
-  .spelling a.kaart{border-left:5px solid #1b6fc4;}
-  .so a.kaart{border-left:5px solid #7b3fbf;}
-  footer{text-align:center; color:#8a93a3; font-size:12px; margin-top:30px;}
-  .topnav{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:10px 0 14px; margin-bottom:14px; border-bottom:1px solid #dfe6f0; position:sticky; top:0; background:#eef3fb; z-index:20;}
-  .topnav .brand{font-weight:800; text-decoration:none; color:#0f172a; font-size:1.15rem; margin-right:auto; display:flex; align-items:center; gap:6px;}
-  .navlinks{display:flex; gap:8px; flex-wrap:wrap;}
-  .navlinks a{text-decoration:none; font-size:.9rem; font-weight:600; padding:8px 14px; border-radius:999px; border:1px solid #e2e8f0; color:#0f172a; background:#fff; white-space:nowrap;}
-  .navlinks a.on{background:#0f172a; color:#fff; border-color:#0f172a;}
-  .gamebadge{font-weight:800; font-size:.8rem; background:#1d2733; color:#fff; padding:6px 11px; border-radius:999px; white-space:nowrap;}
-  .langbtn{font-weight:700; font-size:.82rem; padding:7px 12px; border-radius:999px; border:1px solid #e2e8f0; background:#fff; color:#0f172a; cursor:pointer; white-space:nowrap;}
-  .ps-banner{background:linear-gradient(135deg,#7b3fbf,#1b6fc4); color:#fff; border-radius:18px;
-             padding:20px 22px; margin:0 0 24px; box-shadow:0 6px 18px rgba(90,42,144,.2); text-align:center;}
-  .ps-banner .ps-min{font-size:30px; font-weight:800;}
-  .ps-banner .ps-regel{font-size:14px; opacity:.95; margin-top:4px;}
+  html,body{margin:0;}
+  body{font-family:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--ink); line-height:1.55;}
+  button{font-family:inherit; cursor:pointer;}
+  .app{max-width:880px; margin:0 auto; padding:0 16px 48px;}
+
+  .topnav{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:14px 0; position:sticky; top:0; background:var(--bg); z-index:20; border-bottom:1px solid var(--line); margin-bottom:18px;}
+  .topnav .brand{font-weight:800; text-decoration:none; color:var(--ink); font-size:1.15rem; margin-right:auto;}
+  .navlinks{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+  .navlinks a{text-decoration:none; font-size:.9rem; font-weight:600; padding:8px 14px; border-radius:999px; border:1px solid var(--line); color:var(--ink); background:#fff; white-space:nowrap;}
+  .navlinks a.on{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .langbtn{font-weight:700; font-size:.82rem; padding:8px 12px; border-radius:999px; border:1px solid var(--line); background:#fff; color:var(--ink); cursor:pointer;}
+  .gamebadge{font-weight:800; font-size:.8rem; background:var(--ink); color:#fff; padding:7px 12px; border-radius:999px; white-space:nowrap;}
+
+  .hero{background:linear-gradient(135deg,#1e3a8a,#2563eb 55%,#7c3aed); color:#fff; border-radius:22px; padding:28px; box-shadow:var(--shadow); margin-bottom:20px;}
+  .hero h1{margin:0 0 6px; font-size:1.7rem;}
+  .hero p{margin:0 0 18px; opacity:.92;}
+  .hero-actions{display:flex; gap:10px; flex-wrap:wrap;}
+  .big{border:0; border-radius:12px; padding:13px 20px; font-weight:700; font-size:1rem; background:rgba(255,255,255,.16); color:#fff; text-decoration:none; display:inline-block;}
+  .big.primary{background:#fff; color:var(--primary);}
+  .hero-stat{margin-top:14px; font-size:.9rem; opacity:.95;}
+
+  .ps-banner{display:flex; align-items:center; gap:14px; background:linear-gradient(135deg,#7b3fbf,#1b6fc4); color:#fff; border-radius:18px; padding:16px 20px; box-shadow:var(--shadow); margin-bottom:24px;}
+  .ps-emoji{font-size:34px;}
+  .ps-min{font-size:22px; font-weight:800;}
+  .ps-min span{font-size:14px; font-weight:600; opacity:.9;}
+  .ps-sub{font-size:13px; opacity:.95;}
+
+  .section-title{font-size:1.15rem; margin:22px 0 12px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px;}
+  .card{text-align:left; border:1px solid var(--line); border-top:4px solid var(--c,var(--primary)); background:var(--card); border-radius:var(--radius); padding:14px; box-shadow:var(--shadow); transition:transform .12s, box-shadow .12s; display:flex; flex-direction:column; gap:6px; text-decoration:none; color:var(--ink);}
+  .card:hover{transform:translateY(-3px); box-shadow:0 10px 24px rgba(15,23,42,.12);}
+  .card-top{display:flex; justify-content:space-between; align-items:center;}
+  .card-icon{font-size:1.8rem;}
+  .tag-done{font-size:.66rem; font-weight:800; color:#15803d; background:#dcfce7; padding:3px 8px; border-radius:999px;}
+  .card h3{margin:2px 0 0; font-size:1rem;}
+  .progress{display:flex; align-items:center; gap:8px; margin-top:6px;}
+  .progress-bar{flex:1; height:8px; background:var(--line); border-radius:999px; overflow:hidden;}
+  .progress-bar>div{height:100%; background:var(--c,var(--primary)); transition:width .4s;}
+  .progress-txt{font-size:.74rem; color:var(--muted); font-weight:700;}
+
+  .fiches{display:flex; gap:10px; flex-wrap:wrap;}
+  .fiche{flex:1; min-width:200px; text-decoration:none; color:var(--ink); background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; box-shadow:var(--shadow); display:flex; align-items:center; gap:12px;}
+  .fiche .ic{font-size:24px;}
+  .fiche b{display:block;}
+  .fiche small{color:var(--muted);}
+  .extra-modes{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px;}
+  .mode-card{display:flex; flex-direction:column; gap:4px; text-decoration:none; color:#fff; border-radius:16px; padding:18px; box-shadow:var(--shadow); transition:transform .12s;}
+  .mode-card:hover{transform:translateY(-3px);}
+  .mode-card .mode-title{font-weight:800; font-size:1.05rem;}
+  .mode-card .mode-sub{font-size:.82rem; opacity:.92;}
+  .mode-card.so{background:linear-gradient(135deg,#7c3aed,#db2777);}
+  .mode-card.mar{background:linear-gradient(135deg,#0891b2,#2563eb);}
+  .mode-card.mix{background:linear-gradient(135deg,#ea580c,#ca8a04);}
+  footer{text-align:center; color:#94a3b8; font-size:12px; margin-top:30px;}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="app">
   <nav class="topnav">
     <a class="brand" href="index.html">📚 Studeren</a>
     <div class="navlinks">
       <a href="index.html" class="on">🏠 Start</a>
       <a href="so-oefenen.html">🧬 SO</a>
       <a href="spelling-oefenen.html">✍️ Spelling</a>
-      <a href="stats.html" data-i18n="navStats">📊 Stats</a>
+      <a href="stats.html">📊 Stats</a>
       <button class="langbtn" id="langBtn">🇫🇷 FR</button>
       <span class="gamebadge" id="gameBadge">🎮 0 min</span>
     </div>
   </nav>
-  <h1>📚 Studeren</h1>
-  <p class="sub" data-i18n="sub">Kies een oefening of een studiefiche, William!</p>
+
+  <section class="hero">
+    <h1 data-i18n="heroTitel">Hallo William! 👋</h1>
+    <p data-i18n="heroTekst">Oefen voor je toetsen, verzamel PlayStation-minuten en word een kampioen!</p>
+    <div class="hero-actions">
+      <a class="big primary" href="so-oefenen.html" data-i18n="heroSo">🧬 SO oefenen</a>
+      <a class="big" href="spelling-oefenen.html" data-i18n="heroSp">✍️ Spelling oefenen</a>
+    </div>
+    <div class="hero-stat"><span data-i18n="heroGem">Thema's gemeesterd</span> : <strong id="heroMeester">0/16</strong></div>
+  </section>
 
   <div class="ps-banner">
-    <div class="ps-min">🎮 <span id="psMinBanner">0</span> <span data-i18n="minPs">min PlayStation</span></div>
-    <div class="ps-regel" data-i18n="psRegel">Elk thema 100% juist = +10 min PlayStation 🎮</div>
-  </div>
-
-  <div class="vak so">
-    <h2 data-i18n="soTitel">🧬 SO - puberteit, voortplanting en geboorte</h2>
-    <div class="grid">
-      <a class="kaart" href="so-oefenen.html">
-        <span class="ic">🎮</span>
-        <span class="txt"><b data-i18n="soOefTitel">SO oefenen</b><span data-i18n="soOefSub">Vragen met meteen verbetering en uitleg</span></span>
-      </a>
-      <a class="kaart" href="so-fiche.html">
-        <span class="ic">📄</span>
-        <span class="txt"><b data-i18n="soFicheTitel">SO studiefiche</b><span data-i18n="ficheSub">Alles op een rij - om te lezen of af te drukken</span></span>
-      </a>
+    <span class="ps-emoji">🎮</span>
+    <div>
+      <div class="ps-min"><span id="psMinBanner">0</span> <span data-i18n="minPs">min PlayStation</span></div>
+      <div class="ps-sub" data-i18n="psSub">Elk thema 100% juist = +10 minuten PlayStation</div>
     </div>
   </div>
 
-  <div class="vak spelling">
-    <h2 data-i18n="spTitel">✍️ Spelling</h2>
-    <div class="grid">
-      <a class="kaart" href="spelling-oefenen.html">
-        <span class="ic">🎧</span>
-        <span class="txt"><b data-i18n="spOefTitel">Spelling oefenen</b><span data-i18n="spOefSub">Dictee (woordpakketten 9-18) en regels</span></span>
-      </a>
-      <a class="kaart" href="spelling-fiche.html">
-        <span class="ic">📄</span>
-        <span class="txt"><b data-i18n="spFicheTitel">Spelling studiefiche</b><span data-i18n="spFicheSub">Regels en woordpakketten - om af te drukken</span></span>
-      </a>
-    </div>
+  <h2 class="section-title" data-i18n="soSectie">🧬 SO - oefen per thema</h2>
+  <div class="grid" id="soGrid"></div>
+
+  <h2 class="section-title" data-i18n="spSectie">✍️ Spelling - woordpakketten</h2>
+  <div class="grid" id="spGrid"></div>
+
+  <h2 class="section-title" data-i18n="uitdagingSectie">🔥 Nog meer uitdaging</h2>
+  <div class="extra-modes">
+    <a class="mode-card so" href="so-oefenen.html?alles=1"><span class="mode-title" data-i18n="modeSoTitel">Proefexamen SO</span><span class="mode-sub" data-i18n="modeSoSub">Alle thema's door elkaar</span></a>
+    <a class="mode-card mar" href="spelling-oefenen.html?wp=all"><span class="mode-title" data-i18n="modeMarTitel">Woordmarathon</span><span class="mode-sub" data-i18n="modeMarSub">Alle woordpakketten 9-18</span></a>
+    <a class="mode-card mix" href="spelling-oefenen.html?mix=1"><span class="mode-title" data-i18n="modeMixTitel">Spelling gemengd</span><span class="mode-sub" data-i18n="modeMixSub">Dictee + regels door elkaar</span></a>
+  </div>
+
+  <h2 class="section-title" data-i18n="fichesSectie">📄 Studiefiches (om af te drukken)</h2>
+  <div class="fiches">
+    <a class="fiche" href="so-fiche.html"><span class="ic">📄</span><span><b data-i18n="soFiche">SO studiefiche</b><small data-i18n="soFicheSub">Alles op een rij</small></span></a>
+    <a class="fiche" href="spelling-fiche.html"><span class="ic">📄</span><span><b data-i18n="spFiche">Spelling studiefiche</b><small data-i18n="spFicheSub">Regels en woordpakketten</small></span></a>
   </div>
 
   <footer><span data-i18n="footer">Gemaakt door papa met ❤️</span><br>Veel succes! 💪</footer>
 </div>
+
 <script>
-  const I18N={
-    nl:{ navStats:"📊 Stats", sub:"Kies een oefening of een studiefiche, William!", minPs:"min PlayStation",
-      psRegel:"Elk thema 100% juist = +10 min PlayStation 🎮", soTitel:"🧬 SO - puberteit, voortplanting en geboorte",
-      soOefTitel:"SO oefenen", soOefSub:"Vragen met meteen verbetering en uitleg", soFicheTitel:"SO studiefiche",
-      ficheSub:"Alles op een rij - om te lezen of af te drukken", spTitel:"✍️ Spelling", spOefTitel:"Spelling oefenen",
-      spOefSub:"Dictee (woordpakketten 9-18) en regels", spFicheTitel:"Spelling studiefiche",
-      spFicheSub:"Regels en woordpakketten - om af te drukken", footer:"Gemaakt door papa met ❤️" },
-    fr:{ navStats:"📊 Stats", sub:"Choisis un exercice ou une fiche, William !", minPs:"min de PlayStation",
-      psRegel:"Chaque sujet 100% juste = +10 min de PlayStation 🎮", soTitel:"🧬 SO - puberté, reproduction et naissance",
-      soOefTitel:"Exercices SO", soOefSub:"Questions avec correction et explication directes", soFicheTitel:"Fiche SO",
-      ficheSub:"Tout en résumé - à lire ou à imprimer", spTitel:"✍️ Orthographe", spOefTitel:"Exercices d'orthographe",
-      spOefSub:"Dictée (woordpakketten 9-18) et règles", spFicheTitel:"Fiche d'orthographe",
-      spFicheSub:"Règles et woordpakketten - à imprimer", footer:"Fait par papa avec ❤️" }
-  };
-  let lang=(function(){ try{return localStorage.getItem("lang")||"nl";}catch(e){return "nl";} })();
-  function applyLang(){
-    document.documentElement.lang=lang;
-    document.querySelectorAll("[data-i18n]").forEach(el=>{ const s=I18N[lang][el.dataset.i18n]; if(s!=null) el.textContent=s; });
-    document.getElementById("langBtn").textContent = lang==="nl" ? "🇫🇷 FR" : "🇳🇱 NL";
-  }
-  document.getElementById("langBtn").onclick=()=>{ lang=(lang==="nl")?"fr":"nl"; try{localStorage.setItem("lang",lang);}catch(e){} applyLang(); };
-  try{ var p=JSON.parse(localStorage.getItem("william_studeren_v1"))||{}; var m=(p.psMin)||0;
-       document.getElementById("gameBadge").textContent="🎮 "+m+" min";
-       document.getElementById("psMinBanner").textContent=m; }catch(e){}
-  applyLang();
+const I18N={
+  nl:{ heroTitel:"Hallo William! 👋", heroTekst:"Oefen voor je toetsen, verzamel PlayStation-minuten en word een kampioen!",
+    heroSo:"🧬 SO oefenen", heroSp:"✍️ Spelling oefenen", heroGem:"Thema's gemeesterd", minPs:"min PlayStation",
+    psSub:"Elk thema 100% juist = +10 minuten PlayStation", soSectie:"🧬 SO - oefen per thema",
+    spSectie:"✍️ Spelling - woordpakketten", fichesSectie:"📄 Studiefiches (om af te drukken)",
+    soFiche:"SO studiefiche", soFicheSub:"Alles op een rij", spFiche:"Spelling studiefiche", spFicheSub:"Regels en woordpakketten",
+    footer:"Gemaakt door papa met ❤️", gemeesterd:"gemeesterd", regels:"Regels", wp:"Woordpakket",
+    uitdagingSectie:"🔥 Nog meer uitdaging", modeSoTitel:"Proefexamen SO", modeSoSub:"Alle thema's door elkaar",
+    modeMarTitel:"Woordmarathon", modeMarSub:"Alle woordpakketten 9-18", modeMixTitel:"Spelling gemengd", modeMixSub:"Dictee + regels door elkaar" },
+  fr:{ heroTitel:"Salut William ! 👋", heroTekst:"Entraîne-toi pour tes tests, gagne des minutes de PlayStation et deviens un champion !",
+    heroSo:"🧬 Exercices SO", heroSp:"✍️ Exercices d'orthographe", heroGem:"Sujets maîtrisés", minPs:"min de PlayStation",
+    psSub:"Chaque sujet 100% juste = +10 minutes de PlayStation", soSectie:"🧬 SO - exerce par sujet",
+    spSectie:"✍️ Orthographe - woordpakketten", fichesSectie:"📄 Fiches (à imprimer)",
+    soFiche:"Fiche SO", soFicheSub:"Tout en résumé", spFiche:"Fiche d'orthographe", spFicheSub:"Règles et woordpakketten",
+    footer:"Fait par papa avec ❤️", gemeesterd:"maîtrisé", regels:"Règles", wp:"Woordpakket",
+    uitdagingSectie:"🔥 Encore plus de défi", modeSoTitel:"Examen blanc SO", modeSoSub:"Tous les sujets mélangés",
+    modeMarTitel:"Marathon de mots", modeMarSub:"Tous les woordpakketten 9-18", modeMixTitel:"Orthographe mélangée", modeMixSub:"Dictée + règles mélangées" }
+};
+let lang=(function(){ try{return localStorage.getItem("lang")||"nl";}catch(e){return "nl";} })();
+function t(k){ return (I18N[lang]&&I18N[lang][k]!=null)?I18N[lang][k]:I18N.nl[k]; }
+
+const SO_THEMAS=[
+  {key:"Puberteit", icon:"🌱", c:"#16a34a"},
+  {key:"Jongen",    icon:"👦", c:"#2563eb"},
+  {key:"Meisje",    icon:"👧", c:"#db2777"},
+  {key:"Organen",   icon:"🔬", c:"#7c3aed"},
+  {key:"Baby",      icon:"👶", c:"#ea580c"}
+];
+const WP=[9,10,11,12,13,14,15,16,17,18];
+const SP_KLEUR=["#1b6fc4","#0891b2","#7c3aed","#db2777","#ea580c","#16a34a","#ca8a04","#2563eb","#0d9488","#9333ea"];
+
+function prog(){ try{return JSON.parse(localStorage.getItem("william_studeren_v1"))||{};}catch(e){return {};} }
+
+function kaart(href,icon,c,naam,th){
+  const best=(th&&th.best)||0; const done=th&&th.mastered;
+  return "<a class='card' style='--c:"+c+"' href='"+href+"'>"+
+    "<div class='card-top'><span class='card-icon'>"+icon+"</span>"+(done?("<span class='tag-done'>100% "+t("gemeesterd")+"</span>"):"")+"</div>"+
+    "<h3>"+naam+"</h3>"+
+    "<div class='progress'><div class='progress-bar'><div style='width:"+best+"%'></div></div><span class='progress-txt'>"+best+"%</span></div>"+
+    "</a>";
+}
+
+function render(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-i18n]").forEach(el=>{ const s=t(el.dataset.i18n); if(s!=null) el.textContent=s; });
+  document.getElementById("langBtn").textContent = lang==="nl" ? "🇫🇷 FR" : "🇳🇱 NL";
+
+  const p=prog(); const themes=p.themes||{}; const m=(p.psMin)||0;
+  document.getElementById("gameBadge").textContent="🎮 "+m+" min";
+  document.getElementById("psMinBanner").textContent=m;
+  const alle=SO_THEMAS.length+WP.length+1;
+  let gem=0; SO_THEMAS.forEach(x=>{ if(themes["SO:"+x.key]&&themes["SO:"+x.key].mastered) gem++; });
+  WP.forEach(n=>{ if(themes["SP:WP"+n]&&themes["SP:WP"+n].mastered) gem++; });
+  if(themes["SP:regels"]&&themes["SP:regels"].mastered) gem++;
+  document.getElementById("heroMeester").textContent=gem+"/"+alle;
+
+  document.getElementById("soGrid").innerHTML = SO_THEMAS.map(x=>
+    kaart("so-oefenen.html?thema="+encodeURIComponent(x.key), x.icon, x.c, x.key, themes["SO:"+x.key])
+  ).join("");
+
+  let sp = WP.map((n,i)=>
+    kaart("spelling-oefenen.html?wp="+n, "📦", SP_KLEUR[i%SP_KLEUR.length], t("wp")+" "+n, themes["SP:WP"+n])
+  ).join("");
+  sp += kaart("spelling-oefenen.html?regels=1", "✏️", "#334155", t("regels"), themes["SP:regels"]);
+  document.getElementById("spGrid").innerHTML = sp;
+}
+document.getElementById("langBtn").onclick=()=>{ lang=(lang==="nl")?"fr":"nl"; try{localStorage.setItem("lang",lang);}catch(e){} render(); };
+render();
 </script>
 </body>
 </html>
