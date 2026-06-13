@@ -118,7 +118,8 @@
     <p id="eindTekst"></p>
     <div id="foutenLijst" style="text-align:left;"></div>
     <div class="btn-row" style="justify-content:center; margin-top:16px;">
-      <button class="btn" id="opnieuwFoutBtn">Oefen de fouten opnieuw</button>
+      <button class="btn" id="mailBtn">📧 Stuur naar papa</button>
+      <button class="btn sec" id="opnieuwFoutBtn">Oefen de fouten opnieuw</button>
       <button class="btn sec" id="opnieuwBtn">Terug naar start</button>
     </div>
   </div>
@@ -288,6 +289,18 @@ $("allesUit").onclick=()=>{tk.querySelectorAll(".chip").forEach(c=>c.classList.r
 function meng(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=(i*7+3)%(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
 function norm(s){return (s||"").toLowerCase().trim().replace(/\s+/g," ").replace(/[.,!?']/g,"");}
 function pick(a,seed){return a[seed%a.length];}
+function dedupe(arr){const s=new Set(),o=[];arr.forEach(x=>{if(!s.has(x.q)){s.add(x.q);o.push(x);}});return o;}
+// fout antwoord -> later in deze ronde opnieuw stellen (op een willekeurige plaats)
+function requeue(v){
+  const keer=v._herhaal||0;
+  if(keer>=2) return;                 // max 2 keer opnieuw
+  const k={...v}; k._herhaal=keer+1; k._isHerhaling=true;
+  if(k.opties) k.opties=meng(k.opties);
+  const minPos=Math.min(idx+3, vragen.length);
+  const span=vragen.length-minPos;
+  const pos=minPos+(span>0?Math.floor(Math.random()*(span+1)):0);
+  vragen.splice(pos,0,k);
+}
 
 function start(){
   if(gekozen.size===0){alert("Kies minstens 1 onderwerp.");return;}
@@ -319,7 +332,7 @@ function toonVraag(){
   $("telRechts").textContent="Score: "+score;
   $("streak").textContent= streak>=3 ? ("🔥 "+streak+" op rij") : "";
   $("balkVul").style.width=(idx/vragen.length*100)+"%";
-  $("badge").textContent=v.th;
+  $("badge").textContent = v.th + (v._isHerhaling ? "  🔁 herhaling" : "");
   $("vraagTekst").textContent=v.q;
 
   if(v.t==="type"){
@@ -372,7 +385,7 @@ function goedGeantwoord(uitleg){
   f.innerHTML="<b>"+pick(goedMsg,score+streak)+"</b>"+(uitleg?"<div class='uitleg'>"+uitleg+"</div>":"");
 }
 function foutGeantwoord(v, juist){
-  streak=0; fouten.push(v);
+  streak=0; fouten.push(v); requeue(v);
   const f=$("feedback"); f.className="feedback nok";
   f.innerHTML="<b>"+pick(foutMsg,idx)+"</b> Juiste antwoord: <b>"+juist+"</b>"+(v.u?"<div class='uitleg'>"+v.u+"</div>":"");
 }
@@ -400,9 +413,10 @@ function eindscherm(){
   $("eindTekst").innerHTML=t+" ("+pct+"%)<br><small class='note'>Langste reeks: 🔥 "+maxStreak+"</small>";
 
   const fl=$("foutenLijst");
-  if(fouten.length){
-    let h="<h2 style='font-size:16px;margin:14px 0 8px'>Nog te herhalen ("+fouten.length+"):</h2><ul>";
-    fouten.forEach(f=>{
+  const uniek=dedupe(fouten);
+  if(uniek.length){
+    let h="<h2 style='font-size:16px;margin:14px 0 8px'>Nog te herhalen ("+uniek.length+"):</h2><ul>";
+    uniek.forEach(f=>{
       const juist = (f.t==="type") ? f.a[0] : correctTekst(f);
       h+="<li>"+f.q+" → <b>"+juist+"</b></li>";
     });
@@ -411,8 +425,18 @@ function eindscherm(){
 }
 
 $("opnieuwFoutBtn").onclick=()=>{
-  vragen=meng(fouten.slice()); idx=0; score=0; streak=0; fouten=[];
+  vragen=meng(dedupe(fouten)).map(v=>{const c={...v}; delete c._herhaal; delete c._isHerhaling; if(c.opties) c.opties=meng(c.opties); return c;});
+  idx=0; score=0; streak=0; fouten=[];
   $("einde").classList.add("verstop"); $("quiz").classList.remove("verstop"); toonVraag();
+};
+$("mailBtn").onclick=()=>{
+  const adres="duboisf"+"@"+"gmail.com";
+  const pct=vragen.length?Math.round(score/vragen.length*100):0;
+  const uniek=dedupe(fouten);
+  let body="Resultaat SO oefenen (William)\n\nScore: "+score+" / "+vragen.length+"  ("+pct+"%)\nLangste reeks: "+maxStreak+"\n";
+  if(uniek.length){ body+="\nNog te herhalen:\n"; uniek.forEach(f=>{const j=(f.t==="type")?f.a[0]:correctTekst(f); body+="- "+f.q+" -> "+j+"\n";}); }
+  else body+="\nGeen fouten! Alles juist.\n";
+  location.href="mailto:"+adres+"?subject="+encodeURIComponent("SO oefenen - resultaat William")+"&body="+encodeURIComponent(body);
 };
 $("opnieuwBtn").onclick=()=>{ $("einde").classList.add("verstop"); $("start").classList.remove("verstop"); };
 $("startBtn").onclick=start;

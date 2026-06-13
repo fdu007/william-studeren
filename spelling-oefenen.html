@@ -158,7 +158,8 @@
     <p id="eindTekst"></p>
     <div id="foutenLijst" style="text-align:left;"></div>
     <div class="btn-row" style="justify-content:center; margin-top:16px;">
-      <button class="btn" id="opnieuwFoutBtn">Oefen de fouten opnieuw</button>
+      <button class="btn" id="mailBtn">📧 Stuur naar papa</button>
+      <button class="btn sec" id="opnieuwFoutBtn">Oefen de fouten opnieuw</button>
       <button class="btn sec" id="opnieuwBtn">Terug naar start</button>
     </div>
   </div>
@@ -325,6 +326,19 @@ function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(((i+1)*((Ma
 function meng(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=(i*7+3)%(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
 
 function norm(s){return (s||"").toLowerCase().trim().replace(/\s+/g," ").replace(/[.’]/g,m=>m==="’"?"'":"");}
+function sleutel(v){return v.q || v.toon || v.w;}
+function dedupe(arr){const s=new Set(),o=[];arr.forEach(x=>{const k=sleutel(x);if(!s.has(k)){s.add(k);o.push(x);}});return o;}
+// fout antwoord -> later in deze ronde opnieuw stellen (op een willekeurige plaats)
+function requeue(v){
+  const keer=v._herhaal||0;
+  if(keer>=2) return;                 // max 2 keer opnieuw
+  const k={...v}; k._herhaal=keer+1; k._isHerhaling=true;
+  if(k.opties) k.opties=meng(k.opties);
+  const minPos=Math.min(idx+3, vragen.length);
+  const span=vragen.length-minPos;
+  const pos=minPos+(span>0?Math.floor(Math.random()*(span+1)):0);
+  vragen.splice(pos,0,k);
+}
 
 function bouwDicteeVragen(){
   let lijst=[];
@@ -376,7 +390,7 @@ function toonVraag(){
     $("invulBlok").classList.remove("verstop");
     $("optieBlok").classList.add("verstop");
     $("vraagTekst").textContent="Schrijf het woord dat je hoort.";
-    $("vraagHint").innerHTML="Woordpakket "+v.pk+(v.art?" &middot; lidwoord: <b>"+v.art+"</b>":" &middot; <i>geen lidwoord</i>");
+    $("vraagHint").innerHTML=(v._isHerhaling?"🔁 herhaling &middot; ":"")+"Woordpakket "+v.pk+(v.art?" &middot; lidwoord: <b>"+v.art+"</b>":" &middot; <i>geen lidwoord</i>");
     const inp=$("antwoord"); inp.value=""; inp.disabled=false; inp.focus();
     setTimeout(()=>spreek(v.spreek),250);
   } else {
@@ -384,7 +398,7 @@ function toonVraag(){
     $("invulBlok").classList.add("verstop");
     $("optieBlok").classList.remove("verstop");
     $("vraagTekst").textContent=v.q;
-    $("vraagHint").textContent="";
+    $("vraagHint").innerHTML=v._isHerhaling?"🔁 herhaling":"";
     const ob=$("optieBlok"); ob.innerHTML="";
     v.opties.forEach(op=>{
       const b=document.createElement("button");
@@ -406,7 +420,7 @@ function kiesOptie(btn,op,v){
   }else{
     btn.classList.add("fout");
     knoppen.forEach(k=>{ if(k.textContent===correctTekst(v)) k.classList.add("goed"); });
-    fouten.push(v);
+    fouten.push(v); requeue(v);
     feedback(false,"Fout. Het juiste antwoord is: <b>"+correctTekst(v)+"</b>",v.u);
   }
   naVraag();
@@ -431,7 +445,7 @@ function checkDictee(){
     if(v.art.includes("(") && geg===wOK) goed=true;
   }
   if(goed){ score++; feedback(true,"Juist! &#9989; <b>"+v.toon+"</b>",""); }
-  else{ fouten.push(v); feedback(false,"Fout. Juist is: <b>"+v.toon+"</b>",
+  else{ fouten.push(v); requeue(v); feedback(false,"Fout. Juist is: <b>"+v.toon+"</b>",
         "Jij schreef: “"+inp.value.trim()+"”"); }
   naVraag();
 }
@@ -468,9 +482,10 @@ function eindscherm(){
   $("eindTekst").textContent=t+" ("+pct+"%)";
 
   const fl=$("foutenLijst");
-  if(fouten.length){
-    let h="<h2 style='font-size:16px;margin:14px 0 8px'>Te herhalen ("+fouten.length+"):</h2><ul>";
-    fouten.forEach(f=>{
+  const uniek=dedupe(fouten);
+  if(uniek.length){
+    let h="<h2 style='font-size:16px;margin:14px 0 8px'>Te herhalen ("+uniek.length+"):</h2><ul>";
+    uniek.forEach(f=>{
       if(f.type==="dictee") h+="<li><b>"+f.toon+"</b> <small class='note'>(WP "+f.pk+")</small></li>";
       else h+="<li>"+f.q+" → <b>"+correctTekst(f)+"</b></li>";
     });
@@ -480,9 +495,19 @@ function eindscherm(){
 }
 
 $("opnieuwFoutBtn").onclick=()=>{
-  vragen=meng(fouten.slice()); idx=0; score=0; fouten=[];
+  vragen=meng(dedupe(fouten)).map(v=>{const c={...v}; delete c._herhaal; delete c._isHerhaling; if(c.opties) c.opties=meng(c.opties); return c;});
+  idx=0; score=0; fouten=[];
   $("einde").classList.add("verstop"); $("quiz").classList.remove("verstop");
   toonVraag();
+};
+$("mailBtn").onclick=()=>{
+  const adres="duboisf"+"@"+"gmail.com";
+  const pct=vragen.length?Math.round(score/vragen.length*100):0;
+  const uniek=dedupe(fouten);
+  let body="Resultaat Spelling oefenen (William)\n\nScore: "+score+" / "+vragen.length+"  ("+pct+"%)\n";
+  if(uniek.length){ body+="\nNog te herhalen:\n"; uniek.forEach(f=>{ if(f.type==="dictee") body+="- "+f.toon+" (WP "+f.pk+")\n"; else body+="- "+f.q+" -> "+correctTekst(f)+"\n"; }); }
+  else body+="\nGeen fouten! Alles juist.\n";
+  location.href="mailto:"+adres+"?subject="+encodeURIComponent("Spelling oefenen - resultaat William")+"&body="+encodeURIComponent(body);
 };
 $("opnieuwBtn").onclick=()=>{ $("einde").classList.add("verstop"); $("start").classList.remove("verstop"); };
 $("stopBtn").onclick=eindscherm;
