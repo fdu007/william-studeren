@@ -31,6 +31,10 @@
   .navlinks a{text-decoration:none; font-size:.82rem; font-weight:600; padding:6px 11px; border-radius:999px; border:1px solid #d8cdec; color:#4a4060; background:#fff; white-space:nowrap;}
   .navlinks a.on{background:#3a2a6b; color:#fff; border-color:#3a2a6b;}
   .gamebadge{font-weight:800; font-size:.8rem; background:#1d2733; color:#fff; padding:6px 11px; border-radius:999px; white-space:nowrap;}
+  .ps-banner{background:linear-gradient(135deg,#7b3fbf,#1b6fc4); color:#fff; border-radius:18px;
+             padding:20px 22px; margin:0 0 24px; box-shadow:0 6px 18px rgba(90,42,144,.2); text-align:center;}
+  .ps-banner .ps-min{font-size:30px; font-weight:800;}
+  .ps-banner .ps-regel{font-size:14px; opacity:.95; margin-top:4px;}
 </style>
 </head>
 <body>
@@ -47,6 +51,11 @@
   </nav>
   <h1>📚 Studeren</h1>
   <p class="sub">Kies een oefening of een studiefiche, William!</p>
+
+  <div class="ps-banner">
+    <div class="ps-min">🎮 <span id="psMinBanner">0</span> min PlayStation</div>
+    <div class="ps-regel">Elk thema 100% juist = +10 min PlayStation 🎮</div>
+  </div>
 
   <div class="vak so">
     <h2>🧬 SO - puberteit, voortplanting en geboorte</h2>
@@ -79,8 +88,9 @@
   <footer>Gemaakt door papa met ❤️<br>Veel succes! 💪</footer>
 </div>
 <script>
-  try{ var p=JSON.parse(localStorage.getItem("william_studeren_v1"))||{};
-       document.getElementById("gameBadge").textContent="🎮 "+((p.psMin)||0)+" min"; }catch(e){}
+  try{ var p=JSON.parse(localStorage.getItem("william_studeren_v1"))||{}; var m=(p.psMin)||0;
+       document.getElementById("gameBadge").textContent="🎮 "+m+" min";
+       document.getElementById("psMinBanner").textContent=m; }catch(e){}
 </script>
 </body>
 </html>
