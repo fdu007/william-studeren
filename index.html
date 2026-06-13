@@ -25,10 +25,26 @@
   .spelling a.kaart{border-left:5px solid #1b6fc4;}
   .so a.kaart{border-left:5px solid #7b3fbf;}
   footer{text-align:center; color:#8a93a3; font-size:12px; margin-top:30px;}
+  .topnav{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding-bottom:14px; margin-bottom:14px; border-bottom:1px solid #dfe6f0;}
+  .topnav .brand{font-weight:800; text-decoration:none; color:#3a2a6b; font-size:1.05rem; margin-right:auto;}
+  .navlinks{display:flex; gap:6px; flex-wrap:wrap;}
+  .navlinks a{text-decoration:none; font-size:.82rem; font-weight:600; padding:6px 11px; border-radius:999px; border:1px solid #d8cdec; color:#4a4060; background:#fff; white-space:nowrap;}
+  .navlinks a.on{background:#3a2a6b; color:#fff; border-color:#3a2a6b;}
+  .gamebadge{font-weight:800; font-size:.8rem; background:#1d2733; color:#fff; padding:6px 11px; border-radius:999px; white-space:nowrap;}
 </style>
 </head>
 <body>
 <div class="wrap">
+  <nav class="topnav">
+    <a class="brand" href="index.html">📚 Studeren</a>
+    <div class="navlinks">
+      <a href="index.html" class="on">🏠 Start</a>
+      <a href="so-oefenen.html">🧬 SO</a>
+      <a href="spelling-oefenen.html">✍️ Spelling</a>
+      <a href="stats.html">📊 Stats</a>
+      <span class="gamebadge" id="gameBadge">🎮 0 min</span>
+    </div>
+  </nav>
   <h1>📚 Studeren</h1>
   <p class="sub">Kies een oefening of een studiefiche, William!</p>
 
@@ -62,5 +78,9 @@
 
   <footer>Gemaakt door papa met ❤️<br>Veel succes! 💪</footer>
 </div>
+<script>
+  try{ var p=JSON.parse(localStorage.getItem("william_studeren_v1"))||{};
+       document.getElementById("gameBadge").textContent="🎮 "+((p.psMin)||0)+" min"; }catch(e){}
+</script>
 </body>
 </html>

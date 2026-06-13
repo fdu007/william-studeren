@@ -80,11 +80,31 @@
             font-size:32px; margin:0 auto 8px; background:var(--licht); box-shadow:inset 0 0 0 2px #e2d4f6;}
   .optie{transition:border-color .12s, background .12s, transform .08s;}
   .optie:active{transform:scale(.99);}
+
+  /* ---- menu / topnav ---- */
+  .topnav{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:10px 0 12px; margin-bottom:8px; border-bottom:1px solid #e0d6f0;}
+  .topnav .brand{font-weight:800; text-decoration:none; color:#3a2a6b; font-size:1.05rem; margin-right:auto; display:flex; align-items:center; gap:6px;}
+  .navlinks{display:flex; gap:6px; flex-wrap:wrap;}
+  .navlinks a{text-decoration:none; font-size:.82rem; font-weight:600; padding:6px 11px; border-radius:999px; border:1px solid #d8cdec; color:#4a4060; background:#fff; white-space:nowrap;}
+  .navlinks a:hover{border-color:#7b3fbf;}
+  .navlinks a.on{background:#7b3fbf; color:#fff; border-color:#7b3fbf;}
+  .gamebadge{font-weight:800; font-size:.8rem; background:#1d2733; color:#fff; padding:6px 11px; border-radius:999px; white-space:nowrap;}
+  .ps-vak{background:#fff7e9; border:1px solid #f0d9b0; color:#8a5a12; border-radius:10px; padding:12px 14px; margin:12px 0; font-weight:600;}
 </style>
 </head>
 <body>
 <canvas id="confetti"></canvas>
 <div class="wrap">
+  <nav class="topnav">
+    <a class="brand" href="index.html">📚 Studeren</a>
+    <div class="navlinks">
+      <a href="index.html">🏠 Start</a>
+      <a href="so-oefenen.html" class="on">🧬 SO</a>
+      <a href="spelling-oefenen.html">✍️ Spelling</a>
+      <a href="stats.html">📊 Stats</a>
+      <span class="gamebadge" id="gameBadge">🎮 0 min</span>
+    </div>
+  </nav>
   <header>
     <h1>SO oefenen 🧬</h1>
     <p>Voor William - puberteit, voortplanting, zwangerschap en geboorte (op basis van de cursus)</p>
@@ -135,6 +155,7 @@
     <h2>Klaar!</h2>
     <div class="score-groot" id="eindScore">0 / 0</div>
     <p id="eindTekst"></p>
+    <div id="psMelding"></div>
     <div id="foutenLijst" style="text-align:left;"></div>
     <div class="btn-row" style="justify-content:center; margin-top:16px;">
       <button class="btn" id="mailBtn">📧 Stuur naar papa</button>
@@ -356,10 +377,42 @@ function start(){
     }
     return {...v};
   });
-  idx=0; score=0; streak=0; maxStreak=0; fouten=[];
+  idx=0; score=0; streak=0; maxStreak=0; fouten=[]; themeStats={};
   $("start").classList.add("verstop"); $("einde").classList.add("verstop");
   $("quiz").classList.remove("verstop");
   toonVraag();
+}
+
+/* ===== gedeelde voortgang (localStorage) - zelfde sleutel voor SO en Spelling ===== */
+const PROG_KEY="william_studeren_v1";
+function laadProg(){ try{return JSON.parse(localStorage.getItem(PROG_KEY))||{};}catch(e){return {};} }
+function normProg(p){ p.themes=p.themes||{}; p.global=p.global||{sessions:0,correct:0,total:0,bestStreak:0}; p.psMin=p.psMin||0; return p; }
+function bewaarProg(p){ try{localStorage.setItem(PROG_KEY,JSON.stringify(p));}catch(e){} }
+function psMinuten(){ return normProg(laadProg()).psMin||0; }
+function toonGameBadge(){ const b=$("gameBadge"); if(b) b.textContent="🎮 "+psMinuten()+" min"; }
+let themeStats={};
+function trackAntwoord(v, ok){
+  if(v._isHerhaling) return;                 // herhalingen niet meetellen
+  const th="SO:"+v.th;
+  if(!themeStats[th]) themeStats[th]={goed:0,totaal:0};
+  themeStats[th].totaal++; if(ok) themeStats[th].goed++;
+}
+// schrijf sessie weg; geeft lijst van NIEUW gemeesterde thema's terug
+function recordSessie(){
+  const p=normProg(laadProg());
+  const nieuw=[];
+  Object.keys(themeStats).forEach(th=>{
+    const s=themeStats[th]; if(!s.totaal) return;
+    const pct=Math.round(s.goed/s.totaal*100);
+    const t=p.themes[th]||{best:0,tries:0,mastered:false};
+    t.tries++; if(pct>t.best) t.best=pct;
+    if(s.goed===s.totaal && !t.mastered){ t.mastered=true; p.psMin+=10; nieuw.push(th); }
+    p.themes[th]=t;
+  });
+  p.global.sessions++; p.global.correct+=score; p.global.total+=vragen.length;
+  if(maxStreak>p.global.bestStreak) p.global.bestStreak=maxStreak;
+  bewaarProg(p); toonGameBadge();
+  return nieuw;
 }
 
 function toonVraag(){
@@ -401,6 +454,7 @@ function correctTekst(v){ return v.opties.find(o=>o.goed).tekst; }
 function kiesOptie(btn,op,v){
   if(beantwoord) return; beantwoord=true;
   $("optieBlok").querySelectorAll(".optie").forEach(k=>k.disabled=true);
+  trackAntwoord(v, op.goed);
   if(op.goed){ goedGeantwoord(v.u); btn.classList.add("goed"); }
   else{
     btn.classList.add("fout");
@@ -416,6 +470,7 @@ function checkType(){
   const geg=norm(inp.value); if(geg===""){inp.focus();return;}
   beantwoord=true; inp.disabled=true;
   const ok=v.a.some(ans=>norm(ans)===geg);
+  trackAntwoord(v, ok);
   if(ok){ goedGeantwoord(v.u); }
   else{ foutGeantwoord(v, v.a[0]); }
   naVraag();
@@ -445,9 +500,23 @@ function naVraag(){
 }
 function volgende(){ idx++; if(idx>=vragen.length) eindscherm(); else toonVraag(); }
 
-function eindscherm(){
+function eindscherm(vroeg){
   $("quiz").classList.add("verstop"); $("einde").classList.remove("verstop");
   $("balkVul").style.width="100%";
+  // voortgang + PlayStation-beloning (alleen bij normaal einde)
+  const psEl=$("psMelding"); psEl.innerHTML="";
+  if(vroeg!==true){
+    const nieuw=recordSessie();
+    const monothema = (gekozen.size===1);
+    if(nieuw.length){
+      psEl.innerHTML="<div class='ps-vak'>🎮 Thema gemeesterd! Je verdient <b>"+(nieuw.length*10)+" minuten PlayStation</b>! 🎉</div>";
+      confetti(true); setTimeout(()=>confetti(true),300);
+    } else if(monothema && fouten.length===0){
+      psEl.innerHTML="<div class='ps-vak'>🎮 Top, alles juist! Dit thema had je al gemeesterd.</div>";
+    } else if(monothema){
+      psEl.innerHTML="<div class='ps-vak'>🎮 Voor 10 minuten PlayStation: dit thema <b>zonder fouten</b> afwerken. Bijna!</div>";
+    }
+  }
   $("eindScore").textContent=score+" / "+vragen.length;
   const pct=vragen.length?Math.round(score/vragen.length*100):0;
   let t, e;
@@ -488,7 +557,8 @@ $("mailBtn").onclick=()=>{
 };
 $("opnieuwBtn").onclick=()=>{ $("einde").classList.add("verstop"); $("start").classList.remove("verstop"); };
 $("startBtn").onclick=start;
-$("stopBtn").onclick=eindscherm;
+$("stopBtn").onclick=()=>eindscherm(true);
+toonGameBadge();
 $("checkBtn").onclick=checkType;
 $("volgendeBtn").onclick=volgende;
 $("antwoord").addEventListener("keydown",e=>{ if(e.key==="Enter"){ if(!beantwoord) checkType(); else volgende(); } });

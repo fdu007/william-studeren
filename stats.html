@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="nl-BE">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stats - Studeren</title>
+<style>
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI",Calibri,Arial,sans-serif; margin:0; background:#f6f7fb; color:#1d2733; line-height:1.5;}
+  .wrap{max-width:720px; margin:0 auto; padding:18px;}
+  h1{font-size:26px; margin:6px 0 2px; color:#23314a;}
+  p.sub{color:#5a6675; margin:0 0 14px; font-size:14px;}
+  .topnav{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding-bottom:12px; margin-bottom:16px; border-bottom:1px solid #dfe6f0;}
+  .topnav .brand{font-weight:800; text-decoration:none; color:#23314a; font-size:1.05rem; margin-right:auto;}
+  .navlinks{display:flex; gap:6px; flex-wrap:wrap;}
+  .navlinks a{text-decoration:none; font-size:.82rem; font-weight:600; padding:6px 11px; border-radius:999px; border:1px solid #d3dae6; color:#444; background:#fff; white-space:nowrap;}
+  .navlinks a.on{background:#23314a; color:#fff; border-color:#23314a;}
+  .gamebadge{font-weight:800; font-size:.8rem; background:#1d2733; color:#fff; padding:6px 11px; border-radius:999px;}
+
+  .card{background:#fff; border:1px solid #e2e8f0; border-radius:14px; padding:18px; margin-bottom:16px; box-shadow:0 2px 8px rgba(30,50,90,.05);}
+  h2{font-size:17px; margin:0 0 12px; color:#23314a;}
+  .stats-row{display:grid; grid-template-columns:repeat(4,1fr); gap:10px;}
+  .stat{background:#f3f6fb; border-radius:10px; padding:12px; text-align:center;}
+  .stat b{display:block; font-size:24px; color:#23314a;}
+  .stat span{font-size:12px; color:#5a6675;}
+  .ps{background:linear-gradient(135deg,#7b3fbf,#1b6fc4); color:#fff; border:0;}
+  .ps b{color:#fff; font-size:30px;}
+  .ps span{color:#eee;}
+
+  .thema{display:grid; grid-template-columns:1fr 120px 52px; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid #eef2f7; font-size:14px;}
+  .thema:last-child{border-bottom:0;}
+  .tnaam{font-weight:600;}
+  .tnaam small{display:block; font-weight:400; color:#8a93a3; font-size:11px;}
+  .bar{height:9px; background:#e7edf5; border-radius:6px; overflow:hidden;}
+  .bar > i{display:block; height:100%; border-radius:6px;}
+  .pct{text-align:right; font-weight:700; font-size:13px;}
+  .vlag{font-size:12px; color:#8a93a3;}
+  .groeptitel{font-size:13px; font-weight:700; color:#7b3fbf; margin:14px 0 4px;}
+  .groeptitel.sp{color:#1b6fc4;}
+
+  .aanbev a{display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit;
+            background:#fff7e9; border:1px solid #f0d9b0; border-radius:10px; padding:11px 14px; margin-bottom:8px;}
+  .aanbev a b{color:#8a5a12;}
+  .leeg{color:#5a6675; font-size:14px;}
+  .btn{background:#23314a; color:#fff; border:0; border-radius:10px; padding:11px 16px; font-size:15px; cursor:pointer; font-weight:600;}
+  .btn.rood{background:#fff; color:#c0392b; border:1px solid #e7b7b1;}
+  @media(max-width:560px){ .stats-row{grid-template-columns:repeat(2,1fr);} .thema{grid-template-columns:1fr 90px 46px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="topnav">
+    <a class="brand" href="index.html">📚 Studeren</a>
+    <div class="navlinks">
+      <a href="index.html">🏠 Start</a>
+      <a href="so-oefenen.html">🧬 SO</a>
+      <a href="spelling-oefenen.html">✍️ Spelling</a>
+      <a href="stats.html" class="on">📊 Stats</a>
+      <span class="gamebadge" id="gameBadge">🎮 0 min</span>
+    </div>
+  </nav>
+
+  <h1>📊 Mijn vooruitgang</h1>
+  <p class="sub">Hier zie je hoe goed je elk thema al kent, William.</p>
+
+  <div class="card">
+    <h2>Samenvatting</h2>
+    <div class="stats-row">
+      <div class="stat ps"><b id="sPs">0</b><span>minuten PlayStation 🎮</span></div>
+      <div class="stat"><b id="sMeester">0</b><span>thema's gemeesterd</span></div>
+      <div class="stat"><b id="sGem">-</b><span>gemiddelde score</span></div>
+      <div class="stat"><b id="sSessies">0</b><span>oefensessies</span></div>
+    </div>
+  </div>
+
+  <div class="card aanbev">
+    <h2>👉 Wat oefen je best nog?</h2>
+    <div id="aanbevLijst"></div>
+  </div>
+
+  <div class="card">
+    <h2>Per thema</h2>
+    <div id="themaLijst"></div>
+  </div>
+
+  <div class="card" style="text-align:center;">
+    <button class="btn rood" id="resetBtn">Vooruitgang wissen</button>
+  </div>
+
+  <p style="text-align:center;color:#8a93a3;font-size:12px;">Alles blijft op dit toestel - niets wordt verstuurd.</p>
+</div>
+
+<script>
+const KEY="william_studeren_v1";
+// alle bekende thema's (ook nog niet geoefende tonen we op 0%)
+const SO=["Puberteit","Jongen","Meisje","Organen","Baby"];
+const WP=[9,10,11,12,13,14,15,16,17,18];
+const LABELS={};
+SO.forEach(t=>LABELS["SO:"+t]={naam:t, vak:"🧬 SO", oef:"so-oefenen.html"});
+WP.forEach(n=>LABELS["SP:WP"+n]={naam:"Woordpakket "+n, vak:"✍️ Spelling", oef:"spelling-oefenen.html"});
+LABELS["SP:regels"]={naam:"Spellingregels", vak:"✍️ Spelling", oef:"spelling-oefenen.html"};
+
+function laad(){ try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};} }
+function kleur(p){ return p>=100?"#2f8f4e":p>=60?"#e8841a":p>0?"#c0392b":"#c3cad6"; }
+
+function render(){
+  const p=laad(); const themes=p.themes||{}; const g=p.global||{};
+  const psMin=p.psMin||0;
+  document.getElementById("gameBadge").textContent="🎮 "+psMin+" min";
+  document.getElementById("sPs").textContent=psMin;
+  const alle=Object.keys(LABELS);
+  const gemeesterd=alle.filter(k=>themes[k]&&themes[k].mastered).length;
+  document.getElementById("sMeester").textContent=gemeesterd+" / "+alle.length;
+  document.getElementById("sGem").textContent = g.total ? Math.round(g.correct/g.total*100)+"%" : "-";
+  document.getElementById("sSessies").textContent = g.sessions||0;
+
+  // per thema, gegroepeerd
+  let html=""; let huidigVak="";
+  alle.forEach(k=>{
+    const lab=LABELS[k]; const t=themes[k]||{best:0,tries:0,mastered:false};
+    if(lab.vak!==huidigVak){ huidigVak=lab.vak;
+      html+="<div class='groeptitel"+(huidigVak.indexOf("Spelling")>=0?" sp":"")+"'>"+huidigVak+"</div>"; }
+    html+="<div class='thema'><div class='tnaam'>"+lab.naam+
+          "<small>"+(t.tries?t.tries+"x geoefend":"nog niet geoefend")+(t.mastered?" &middot; gemeesterd ✅":"")+"</small></div>"+
+          "<div class='bar'><i style='width:"+(t.best||0)+"%;background:"+kleur(t.best||0)+"'></i></div>"+
+          "<div class='pct' style='color:"+kleur(t.best||0)+"'>"+(t.best||0)+"%</div></div>";
+  });
+  document.getElementById("themaLijst").innerHTML=html;
+
+  // aanbevelingen: niet-gemeesterde thema's, zwakste eerst
+  const teDoen=alle.map(k=>({k, t:themes[k]||{best:0,mastered:false}}))
+                   .filter(x=>!x.t.mastered)
+                   .sort((a,b)=>(a.t.best||0)-(b.t.best||0))
+                   .slice(0,3);
+  const al=document.getElementById("aanbevLijst");
+  if(teDoen.length){
+    al.innerHTML=teDoen.map(x=>{ const lab=LABELS[x.k];
+      return "<a href='"+lab.oef+"'><span style='font-size:22px'>🎯</span><span>Oefen <b>"+lab.naam+"</b> ("+lab.vak+") - nu "+(x.t.best||0)+"%. Haal 100% voor 10 min PlayStation!</span></a>";
+    }).join("");
+  } else {
+    al.innerHTML="<p class='leeg'>🏆 Alles gemeesterd! Super gedaan, William!</p>";
+  }
+}
+
+document.getElementById("resetBtn").onclick=()=>{
+  if(confirm("Alle vooruitgang en PlayStation-minuten wissen?")){ localStorage.removeItem(KEY); render(); }
+};
+render();
+</script>
+</body>
+</html>

@@ -99,11 +99,31 @@
   .emoji{font-size:42px;}
   .ic-thema{width:58px; height:58px; border-radius:50%; display:flex; align-items:center; justify-content:center;
             font-size:30px; margin:0 auto 6px; background:var(--lichtblauw); box-shadow:inset 0 0 0 2px #cfe0f5;}
+
+  /* ---- menu / topnav ---- */
+  .topnav{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:10px 0 12px; margin-bottom:8px; border-bottom:1px solid #d7e3f2;}
+  .topnav .brand{font-weight:800; text-decoration:none; color:#13548f; font-size:1.05rem; margin-right:auto; display:flex; align-items:center; gap:6px;}
+  .navlinks{display:flex; gap:6px; flex-wrap:wrap;}
+  .navlinks a{text-decoration:none; font-size:.82rem; font-weight:600; padding:6px 11px; border-radius:999px; border:1px solid #cddff0; color:#33485f; background:#fff; white-space:nowrap;}
+  .navlinks a:hover{border-color:#1b6fc4;}
+  .navlinks a.on{background:#1b6fc4; color:#fff; border-color:#1b6fc4;}
+  .gamebadge{font-weight:800; font-size:.8rem; background:#1d2733; color:#fff; padding:6px 11px; border-radius:999px; white-space:nowrap;}
+  .ps-vak{background:#fff7e9; border:1px solid #f0d9b0; color:#8a5a12; border-radius:10px; padding:12px 14px; margin:12px 0; font-weight:600;}
 </style>
 </head>
 <body>
 <canvas id="confetti"></canvas>
 <div class="wrap">
+  <nav class="topnav">
+    <a class="brand" href="index.html">📚 Studeren</a>
+    <div class="navlinks">
+      <a href="index.html">🏠 Start</a>
+      <a href="so-oefenen.html">🧬 SO</a>
+      <a href="spelling-oefenen.html" class="on">✍️ Spelling</a>
+      <a href="stats.html">📊 Stats</a>
+      <span class="gamebadge" id="gameBadge">🎮 0 min</span>
+    </div>
+  </nav>
   <header>
     <h1>Spelling oefenen</h1>
     <p>Voor William - op basis van de cursus (Z-schrift 6)</p>
@@ -173,6 +193,7 @@
     <h2>Klaar!</h2>
     <div class="score-groot" id="eindScore">0 / 0</div>
     <p id="eindTekst"></p>
+    <div id="psMelding"></div>
     <div id="foutenLijst" style="text-align:left;"></div>
     <div class="btn-row" style="justify-content:center; margin-top:16px;">
       <button class="btn" id="mailBtn">📧 Stuur naar papa</button>
@@ -405,11 +426,41 @@ function start(){
   }
   // beperk tot redelijk aantal
   if(vragen.length>40) vragen=vragen.slice(0,40);
-  idx=0; score=0; fouten=[];
+  idx=0; score=0; fouten=[]; themeStats={};
   $("start").classList.add("verstop");
   $("einde").classList.add("verstop");
   $("quiz").classList.remove("verstop");
   toonVraag();
+}
+
+/* ===== gedeelde voortgang (localStorage) - zelfde sleutel voor SO en Spelling ===== */
+const PROG_KEY="william_studeren_v1";
+function laadProg(){ try{return JSON.parse(localStorage.getItem(PROG_KEY))||{};}catch(e){return {};} }
+function normProg(p){ p.themes=p.themes||{}; p.global=p.global||{sessions:0,correct:0,total:0,bestStreak:0}; p.psMin=p.psMin||0; return p; }
+function bewaarProg(p){ try{localStorage.setItem(PROG_KEY,JSON.stringify(p));}catch(e){} }
+function psMinuten(){ return normProg(laadProg()).psMin||0; }
+function toonGameBadge(){ const b=$("gameBadge"); if(b) b.textContent="🎮 "+psMinuten()+" min"; }
+let themeStats={};
+function themaVan(v){ return v.type==="dictee" ? ("SP:WP"+v.pk) : "SP:regels"; }
+function trackAntwoord(v, ok){
+  if(v._isHerhaling) return;
+  const th=themaVan(v);
+  if(!themeStats[th]) themeStats[th]={goed:0,totaal:0};
+  themeStats[th].totaal++; if(ok) themeStats[th].goed++;
+}
+function recordSessie(){
+  const p=normProg(laadProg()); const nieuw=[];
+  Object.keys(themeStats).forEach(th=>{
+    const s=themeStats[th]; if(!s.totaal) return;
+    const pct=Math.round(s.goed/s.totaal*100);
+    const t=p.themes[th]||{best:0,tries:0,mastered:false};
+    t.tries++; if(pct>t.best) t.best=pct;
+    if(s.goed===s.totaal && !t.mastered){ t.mastered=true; p.psMin+=10; nieuw.push(th); }
+    p.themes[th]=t;
+  });
+  p.global.sessions++; p.global.correct+=score; p.global.total+=vragen.length;
+  bewaarProg(p); toonGameBadge();
+  return nieuw;
 }
 
 function toonVraag(){
@@ -454,6 +505,7 @@ function kiesOptie(btn,op,v){
   beantwoord=true;
   const knoppen=$("optieBlok").querySelectorAll(".optie");
   knoppen.forEach(k=>k.disabled=true);
+  trackAntwoord(v, op.goed);
   if(op.goed){
     btn.classList.add("goed"); score++;
     feedback(true,"Juist! &#9989;",v.u);
@@ -484,6 +536,7 @@ function checkDictee(){
     arts.forEach(a=>{ if(geg===norm(a+" "+v.w)) goed=true; });
     if(v.art.includes("(") && geg===wOK) goed=true;
   }
+  trackAntwoord(v, goed);
   if(goed){ score++; feedback(true,"Juist! &#9989; <b>"+v.toon+"</b>",""); }
   else{ fouten.push(v); requeue(v); feedback(false,"Fout. Juist is: <b>"+v.toon+"</b>",
         "Jij schreef: “"+inp.value.trim()+"”"); }
@@ -509,11 +562,24 @@ function volgende(){
   else toonVraag();
 }
 
-function eindscherm(){
+function eindscherm(vroeg){
   $("quiz").classList.add("verstop");
   $("einde").classList.remove("verstop");
   $("balkVul").style.width="100%";
   $("eindScore").textContent=score+" / "+vragen.length;
+  const psEl=$("psMelding"); if(psEl){ psEl.innerHTML="";
+    if(vroeg!==true){
+      const nieuw=recordSessie();
+      if(nieuw.length){
+        psEl.innerHTML="<div class='ps-vak'>🎮 Thema gemeesterd! Je verdient <b>"+(nieuw.length*10)+" minuten PlayStation</b>! 🎉</div>";
+        confetti(true); setTimeout(()=>confetti(true),300);
+      } else if(fouten.length===0){
+        psEl.innerHTML="<div class='ps-vak'>🎮 Top, alles juist! Deze thema's had je al gemeesterd.</div>";
+      } else {
+        psEl.innerHTML="<div class='ps-vak'>🎮 Voor 10 minuten PlayStation: een thema <b>zonder fouten</b> afwerken. Bijna!</div>";
+      }
+    }
+  }
   const pct=vragen.length?Math.round(score/vragen.length*100):0;
   let t, e;
   if(pct===100){ t="Perfect! Alles juist!"; e="🏆"; }
@@ -554,7 +620,8 @@ $("mailBtn").onclick=()=>{
   location.href="mailto:"+adres+"?subject="+encodeURIComponent("Spelling oefenen - resultaat William")+"&body="+encodeURIComponent(body);
 };
 $("opnieuwBtn").onclick=()=>{ $("einde").classList.add("verstop"); $("start").classList.remove("verstop"); };
-$("stopBtn").onclick=eindscherm;
+$("stopBtn").onclick=()=>eindscherm(true);
+toonGameBadge();
 $("startBtn").onclick=start;
 $("checkBtn").onclick=()=>{ if(vragen[idx].type==="dictee") checkDictee(); };
 $("volgendeBtn").onclick=volgende;
