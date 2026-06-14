@@ -380,7 +380,7 @@ const I18N={
     psBijna:"🎮 Voor 10 minuten PlayStation: dit thema <b>zonder fouten</b> afwerken. Bijna!",
     goedMsg:["Top! 🎉","Bingo! ✅","Pico bello! 🌟","Yes! 💪","Goed bezig! 👏","Helemaal juist! 🧠","Knap! ⭐"],
     foutMsg:["Bijna! 🤏","Oei, net niet.","Geen probleem, kijk even:","Volgende keer beter! 💡"],
-    herhaling:"herhaling"
+    herhaling:"herhaling", juistLabel:"Juist", foutLabel:"Fout"
   },
   fr:{
     titel:"Exercices SO 🧬",
@@ -404,7 +404,7 @@ const I18N={
     psBijna:"🎮 Pour 10 minutes de PlayStation : termine ce sujet <b>sans faute</b>. Presque !",
     goedMsg:["Génial ! 🎉","Bingo ! ✅","Super ! 🌟","Oui ! 💪","Bien joué ! 👏","Tout juste ! 🧠","Bravo ! ⭐"],
     foutMsg:["Presque ! 🤏","Oups, pas tout à fait.","Pas grave, regarde :","La prochaine fois ! 💡"],
-    herhaling:"révision"
+    herhaling:"révision", juistLabel:"Vrai", foutLabel:"Faux"
   }
 };
 let lang = (function(){ try{return localStorage.getItem("lang")||"nl";}catch(e){return "nl";} })();
@@ -475,8 +475,8 @@ function start(){
       return {...v, opties:meng(paren)};
     }
     if(v.t==="jf"){
-      const paren=[{tekst:"Juist",goed:v.a===true},{tekst:"Fout",goed:v.a===false}];
-      return {...v, opties:paren};
+      const paren=[{tekst:t("juistLabel"),goed:v.a===true},{tekst:t("foutLabel"),goed:v.a===false}];
+      return {...v, opties:meng(paren)};
     }
     return {...v};
   });
